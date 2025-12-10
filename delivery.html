@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PUREFOLK | Delivery Info & Charges</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --pf-bg: #f7f3ec;
+      --pf-card: #ffffff;
+      --pf-green: #4d6a41;
+      --pf-brown: #5a4a42;
+      --pf-text: #3a332f;
+      --pf-muted: #8e8076;
+      --pf-radius-lg: 24px;
+      --pf-radius-md: 18px;
+      --pf-shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.08);
+      --pf-shadow-light: 0 12px 24px rgba(0, 0, 0, 0.05);
+      --pf-transition-fast: 0.18s ease-out;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #fff 0, var(--pf-bg) 60%);
+      color: var(--pf-text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .pf-page {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 16px 16px 32px;
+    }
+
+    header.pf-header {
+      padding: 12px 0 4px;
+      text-align: center;
+    }
+
+    .pf-logo-text {
+      font-family: "Playfair Display", serif;
+      font-size: 30px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--pf-brown);
+    }
+
+    .pf-tagline-top {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--pf-muted);
+    }
+
+    /* Intro card */
+
+    .pf-card {
+      margin-top: 18px;
+      background: var(--pf-card);
+      border-radius: var(--pf-radius-lg);
+      box-shadow: var(--pf-shadow-soft);
+      padding: 18px 18px 16px;
+    }
+
+    .pf-card-title {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .pf-card-sub {
+      font-size: 13px;
+      color: var(--pf-muted);
+      margin-bottom: 10px;
+    }
+
+    .pf-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .pf-pill {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(77, 106, 65, 0.35);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--pf-green);
+    }
+
+    /* Free vs Paid */
+
+    .pf-two-cols {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .pf-chip-card {
+      border-radius: var(--pf-radius-md);
+      padding: 12px 10px;
+      background: #fdfbf7;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .pf-chip-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--pf-muted);
+      margin-bottom: 4px;
+    }
+
+    .pf-chip-main {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--pf-brown);
+    }
+
+    .pf-chip-note {
+      font-size: 11px;
+      margin-top: 4px;
+      color: var(--pf-muted);
+    }
+
+    /* Form */
+
+    .pf-section-heading {
+      margin-top: 22px;
+      margin-bottom: 6px;
+      font-family: "Playfair Display", serif;
+      font-size: 19px;
+    }
+
+    .pf-section-sub {
+      font-size: 13px;
+      color: var(--pf-muted);
+      margin-bottom: 8px;
+    }
+
+    form.pf-form {
+      margin-top: 6px;
+      background: var(--pf-card);
+      border-radius: var(--pf-radius-lg);
+      box-shadow: var(--pf-shadow-soft);
+      padding: 16px 16px 18px;
+    }
+
+    .pf-field {
+      margin-bottom: 12px;
+    }
+
+    .pf-label {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .pf-label span {
+      color: #b33a3a;
+    }
+
+    .pf-input,
+    .pf-select,
+    .pf-textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 9px 11px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fdfbf7;
+      outline: none;
+      transition: border-color var(--pf-transition-fast), box-shadow var(--pf-transition-fast), background 0.2s;
+    }
+
+    .pf-input:focus,
+    .pf-select:focus,
+    .pf-textarea:focus {
+      border-color: var(--pf-green);
+      box-shadow: 0 0 0 1px rgba(77,106,65,0.18);
+      background: #ffffff;
+    }
+
+    .pf-textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .pf-help {
+      font-size: 11px;
+      color: var(--pf-muted);
+      margin-top: 3px;
+    }
+
+    .pf-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .pf-row > .pf-field {
+      flex: 1;
+    }
+
+    .pf-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .pf-btn {
+      border-radius: 999px;
+      padding: 10px 14px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform var(--pf-transition-fast), box-shadow var(--pf-transition-fast), background 0.2s;
+    }
+
+    .pf-btn-primary {
+      background: linear-gradient(135deg, var(--pf-green), #6f8f61);
+      color: #fff;
+      box-shadow: var(--pf-shadow-light);
+    }
+
+    .pf-btn-primary:active {
+      transform: scale(0.97);
+      box-shadow: none;
+    }
+
+    .pf-btn-outline {
+      background: transparent;
+      color: var(--pf-brown);
+      border: 1px solid rgba(90, 74, 66, 0.4);
+    }
+
+    .pf-error {
+      color: #b33a3a;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* Summary */
+
+    .pf-summary {
+      margin-top: 18px;
+      background: #fdfbf7;
+      border-radius: var(--pf-radius-lg);
+      border: 1px dashed rgba(90,74,66,0.25);
+      padding: 14px 14px 12px;
+      display: none;
+    }
+
+    .pf-summary-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--pf-brown);
+    }
+
+    .pf-summary-id {
+      font-family: "Playfair Display", serif;
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: var(--pf-green);
+    }
+
+    .pf-summary-line {
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .pf-summary-note {
+      font-size: 11px;
+      color: var(--pf-muted);
+      margin-top: 5px;
+    }
+
+    /* Bottom nav + footer */
+
+    .pf-divider {
+      margin: 26px 0 16px;
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .pf-bottom-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .pf-bottom-link a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(77, 106, 65, 0.28);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--pf-green);
+      font-size: 13px;
+      font-weight: 500;
+      gap: 6px;
+    }
+
+    .pf-bottom-link span {
+      font-size: 17px;
+    }
+
+    footer.pf-footer {
+      background: #3b342f;
+      color: rgba(255, 255, 255, 0.76);
+      border-radius: 24px;
+      padding: 10px 18px 16px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .pf-footer-location {
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 2px;
+    }
+
+    @media (min-width: 540px) {
+      .pf-page {
+        padding-top: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="pf-page">
+
+    <header class="pf-header">
+      <div class="pf-logo-text">PUREFOLK</div>
+      <p class="pf-tagline-top">Eat Pure. Live Pure. Be Better.</p>
+    </header>
+
+    <!-- DELIVERY INTRO -->
+    <section class="pf-card">
+      <h1 class="pf-card-title">Delivery Area & Charges</h1>
+      <p class="pf-card-sub">
+        We deliver from <strong>Mahesh Park, Nalasopara East</strong> to nearby areas.
+        Clean satvik meals, brought to your door by foot.
+      </p>
+
+      <div class="pf-two-cols">
+        <div class="pf-chip-card">
+          <div class="pf-chip-label">Within 5 KM</div>
+          <div class="pf-chip-main">Free Delivery</div>
+          <div class="pf-chip-note">Achole Road, Dhaniv Baug, Tulinj, Moregaon, Vasant Nagari, nearby.</div>
+        </div>
+        <div class="pf-chip-card">
+          <div class="pf-chip-label">Beyond 5 KM</div>
+          <div class="pf-chip-main">₹30 Delivery Charge</div>
+          <div class="pf-chip-note">Applies for 5–7 KM range like some parts of Nalasopara West & link road.</div>
+        </div>
+      </div>
+
+      <div class="pf-pill-row">
+        <span class="pf-pill">Dinner Slot: 7:00 PM – 9:00 PM</span>
+        <span class="pf-pill">Pre-Order Required</span>
+        <span class="pf-pill">Walking Delivery · Limited Orders Per Day</span>
+      </div>
+    </section>
+
+    <!-- CALCULATOR FORM -->
+    <h2 class="pf-section-heading">Check Delivery & Create Order Summary</h2>
+    <p class="pf-section-sub">Fill this once. We’ll calculate distance, charges and send full details to WhatsApp.</p>
+
+    <form class="pf-form" id="pf-delivery-form">
+      <div class="pf-field">
+        <label class="pf-label">Your Name <span>*</span></label>
+        <input type="text" id="pf-name" class="pf-input" placeholder="Full name" required />
+      </div>
+
+      <div class="pf-field">
+        <label class="pf-label">Select Area & Sub-Area <span>*</span></label>
+        <select id="pf-area" class="pf-select" required>
+          <option value="">Choose your nearby location</option>
+
+          <optgroup label="Nalasopara East – Achole / Dhaniv Side">
+            <option value="Achole Road – Chandan Naka" data-km="2.0">Achole Road – Chandan Naka (~2.0 KM)</option>
+            <option value="Achole Road – Bori Colony" data-km="2.4">Achole Road – Bori Colony (~2.4 KM)</option>
+            <option value="Achole Road – Dwarka Hotel" data-km="2.2">Dwarka Hotel Area (~2.2 KM)</option>
+            <option value="Dhaniv Baug" data-km="3.5">Dhaniv Baug Main (~3.5 KM)</option>
+            <option value="Tulinj Road – Fatherwadi" data-km="3.8">Tulinj Road / Fatherwadi (~3.8 KM)</option>
+            <option value="Moregaon Road" data-km="4.2">Moregaon Road (~4.2 KM)</option>
+            <option value="Vasant Nagari / Evershine East" data-km="4.8">Vasant Nagari / Evershine (East touch) (~4.8 KM)</option>
+          </optgroup>
+
+          <optgroup label="Nalasopara West – Station / Sainath / Shrishti Side">
+            <option value="Station Road West / Shankar Das" data-km="5.4">Station Road West / Shankar Das (~5.4 KM)</option>
+            <option value="Sainath Nagar West" data-km="5.8">Sainath Nagar (~5.8 KM)</option>
+            <option value="Shrishti / Poonam Sagar" data-km="6.2">Shrishti / Poonam Sagar (~6.2 KM)</option>
+            <option value="Nilemore" data-km="6.5">Nilemore (~6.5 KM)</option>
+            <option value="Santosh Bhavan / Link Road" data-km="7.0">Santosh Bhavan / Link Road (~7.0 KM)</option>
+          </optgroup>
+
+          <optgroup label="Other / Not Sure">
+            <option value="Not sure – please guide" data-km="5.0">I am not sure, please guide me (~5 KM assumed)</option>
+          </optgroup>
+        </select>
+        <p class="pf-help">Approx distance is auto-used for delivery charges. Exact location will be confirmed on WhatsApp.</p>
+      </div>
+
+      <div class="pf-field">
+        <label class="pf-label">Full Delivery Address <span>*</span></label>
+        <textarea id="pf-address" class="pf-textarea" placeholder="Building name, floor, landmark…" required></textarea>
+      </div>
+
+      <div class="pf-row">
+        <div class="pf-field">
+          <label class="pf-label">Meal <span>*</span></label>
+          <select id="pf-meal" class="pf-select" required>
+            <option value="">Select meal</option>
+            <option value="Pure Protein Taco – ₹89">Pure Protein Taco – ₹89</option>
+            <option value="Dal–Rice Bowl – ₹89">Dal–Rice Bowl – ₹89</option>
+            <option value="Satvik Khichdi – ₹79">Satvik Khichdi – ₹79</option>
+          </select>
+        </div>
+        <div class="pf-field">
+          <label class="pf-label">Quantity <span>*</span></label>
+          <input type="number" id="pf-qty" class="pf-input" min="1" max="10" value="1" required />
+        </div>
+      </div>
+
+      <div class="pf-field">
+        <label class="pf-label">Jain Option Needed?</label>
+        <select id="pf-jain" class="pf-select">
+          <option value="No">No</option>
+          <option value="Yes">Yes, Jain preparation please</option>
+        </select>
+      </div>
+
+      <div class="pf-field">
+        <label class="pf-label">Preferred Delivery Slot</label>
+        <select id="pf-slot" class="pf-select">
+          <option value="Any between 7:00–9:00 PM">Any between 7:00–9:00 PM</option>
+          <option value="7:00–7:30 PM">7:00–7:30 PM</option>
+          <option value="7:30–8:00 PM">7:30–8:00 PM</option>
+          <option value="8:00–8:30 PM">8:00–8:30 PM</option>
+          <option value="8:30–9:00 PM">8:30–9:00 PM</option>
+        </select>
+      </div>
+
+      <div class="pf-field">
+        <label class="pf-label">Payment Method</label>
+        <select id="pf-pay" class="pf-select">
+          <option value="Cash on Delivery">Cash on Delivery</option>
+          <option value="UPI – to be shared on WhatsApp">UPI – to be shared on WhatsApp</option>
+        </select>
+        <p class="pf-help">UPI ID will be confirmed on WhatsApp for safety. No advance required for first orders.</p>
+      </div>
+
+      <p id="pf-error" class="pf-error">Please fill all required fields correctly.</p>
+
+      <div class="pf-actions">
+        <button type="submit" class="pf-btn pf-btn-primary">Get Summary & Send to WhatsApp</button>
+        <a href="index.html" class="pf-btn pf-btn-outline" style="text-align:center;">← Back to Today’s Menu</a>
+        <a href="https://tally.so/r/obbJBN" target="_blank" class="pf-btn pf-btn-outline" style="text-align:center;">
+          Open Full Pre-Order Form (Tally)
+        </a>
+      </div>
+    </form>
+
+    <!-- SUMMARY BOX -->
+    <div id="pf-summary" class="pf-summary">
+      <div class="pf-summary-title">Order Request Created</div>
+      <div id="pf-summary-id" class="pf-summary-id"></div>
+      <div id="pf-summary-lines"></div>
+      <div class="pf-summary-note">
+        This is a request, not an online payment. We will confirm your order & timing personally on WhatsApp.
+      </div>
+    </div>
+
+    <hr class="pf-divider" />
+
+    <nav class="pf-bottom-links">
+      <div class="pf-bottom-link">
+        <a href="nutrition.html">View Nutrition Details<span>↗</span></a>
+      </div>
+      <div class="pf-bottom-link">
+        <a href="review.html">Read / Give Reviews<span>↗</span></a>
+      </div>
+      <div class="pf-bottom-link">
+        <a href="index.html">Back to Home & Today’s Menu<span>↗</span></a>
+      </div>
+    </nav>
+
+    <footer class="pf-footer">
+      <div>© 2025 PUREFOLK</div>
+      <div class="pf-footer-location">Mahesh Park · Nalasopara East · 5KM dinner radius</div>
+    </footer>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = "918010342375"; // 91 + your number
+
+    function generateOrderId() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, "0");
+      const dd = String(now.getDate()).padStart(2, "0");
+      const hh = String(now.getHours()).padStart(2, "0");
+      const min = String(now.getMinutes()).padStart(2, "0");
+      const rand = String(Math.floor(10 + Math.random() * 90)); // 2-digit
+      return `PF-${year}${mm}${dd}-${hh}${min}-${rand}`;
+    }
+
+    function calcDeliveryCharge(km) {
+      if (isNaN(km)) return 0;
+      return km <= 5 ? 0 : 30;
+    }
+
+    function calcMealPrice(mealValue) {
+      if (!mealValue) return 0;
+      if (mealValue.includes("₹89")) return 89;
+      if (mealValue.includes("₹79")) return 79;
+      return 0;
+    }
+
+    function openWhatsApp(text) {
+      const msg = encodeURIComponent(text);
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+      window.open(url, "_blank");
+    }
+
+    document.getElementById("pf-delivery-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("pf-name").value.trim();
+      const areaSelect = document.getElementById("pf-area");
+      const area = areaSelect.value;
+      const km = parseFloat(areaSelect.selectedOptions[0]?.dataset.km || "5");
+      const address = document.getElementById("pf-address").value.trim();
+      const meal = document.getElementById("pf-meal").value;
+      const qty = parseInt(document.getElementById("pf-qty").value || "1", 10);
+      const jain = document.getElementById("pf-jain").value;
+      const slot = document.getElementById("pf-slot").value;
+      const pay = document.getElementById("pf-pay").value;
+
+      const errorEl = document.getElementById("pf-error");
+
+      if (!name || !area || !address || !meal || !qty || qty < 1) {
+        errorEl.style.display = "block";
+        errorEl.textContent = "Please fill all required fields.";
+        return;
+      } else {
+        errorEl.style.display = "none";
+      }
+
+      const basePrice = calcMealPrice(meal);
+      const mealTotal = basePrice * qty;
+      const deliveryCharge = calcDeliveryCharge(km);
+      const grandTotal = mealTotal + deliveryCharge;
+
+      const orderId = generateOrderId();
+
+      // Build summary for page
+      const summaryBox = document.getElementById("pf-summary");
+      const summaryIdEl = document.getElementById("pf-summary-id");
+      const summaryLinesEl = document.getElementById("pf-summary-lines");
+
+      summaryIdEl.textContent = `Confirmation ID: ${orderId}`;
+
+      summaryLinesEl.innerHTML = `
+        <p class="pf-summary-line"><strong>Name:</strong> ${name}</p>
+        <p class="pf-summary-line"><strong>Area:</strong> ${area} (approx ${km.toFixed(1)} KM from Mahesh Park)</p>
+        <p class="pf-summary-line"><strong>Meal:</strong> ${meal} × ${qty}</p>
+        <p class="pf-summary-line"><strong>Jain Option:</strong> ${jain}</p>
+        <p class="pf-summary-line"><strong>Meal Total:</strong> ₹${mealTotal}</p>
+        <p class="pf-summary-line"><strong>Delivery Charge:</strong> ₹${deliveryCharge} ${deliveryCharge === 0 ? "(within 5 KM – free)" : "(beyond 5 KM)"} </p>
+        <p class="pf-summary-line"><strong>Approx Total:</strong> ₹${grandTotal}</p>
+        <p class="pf-summary-line"><strong>Preferred Slot:</strong> ${slot}</p>
+        <p class="pf-summary-line"><strong>Payment:</strong> ${pay}</p>
+        <p class="pf-summary-line"><strong>Address:</strong> ${address}</p>
+      `;
+
+      summaryBox.style.display = "block";
+      summaryBox.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      // Build WhatsApp text
+      const waText = `
+PUREFOLK ORDER REQUEST
+ID: ${orderId}
+
+Name: ${name}
+Area: ${area}
+Distance: ~${km.toFixed(1)} KM from Mahesh Park
+
+Meal: ${meal} × ${qty}
+Jain Option: ${jain}
+
+Meal Total: ₹${mealTotal}
+Delivery Charge: ₹${deliveryCharge}
+Approx Total: ₹${grandTotal}
+
+Preferred Slot: ${slot}
+Payment: ${pay}
+
+Address:
+${address}
+
+(Please confirm availability & final total.)`;
+
+      openWhatsApp(waText);
+    });
+  </script>
+</body>
+</html>
