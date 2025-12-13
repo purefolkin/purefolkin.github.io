@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <url>
+    <loc>https://purefolkin.github.io/</loc>
+    <priority>1.00</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/home.html</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/menu.html</loc>
+    <priority>0.64</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/delivery.html</loc>
+    <priority>0.64</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/review.html</loc>
+    <priority>0.64</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/subscription.html</loc>
+    <priority>0.64</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/high-protein.html</loc>
+    <priority>0.51</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/satvik-food.html</loc>
+    <priority>0.51</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/jain-food.html</loc>
+    <priority>0.51</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/drink.html</loc>
+    <priority>0.51</priority>
+  </url>
+
+  <url>
+    <loc>https://purefolkin.github.io/nutrition.html</loc>
+    <priority>0.51</priority>
+  </url>
+
+</urlset>
