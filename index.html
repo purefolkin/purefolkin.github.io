@@ -1,11 +1,632 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=home.html">
-  <title>Purefolk</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Purefolk – Clean, Fresh, Pure Vegetarian Meals</title>
+
+  <!-- SEO CORE -->
+<link rel="canonical" href="https://purefolkin.github.io/" />
+  
+<meta name="robots" content="index, follow" />
+  <meta name="description" content="Purefolk serves clean, fresh, vegetarian evening meals – satvik, high-protein, Jain-friendly, cooked only after you order. Delivery in Nalasopara / Mahesh Park." />
+
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #F5F1E8;
+      color: #2A2A2A;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 18px 18px 28px;
+    }
+
+    /* HEADER */
+    header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .logo-wrap {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #E4D8C7;
+      margin: 0 auto 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .brand {
+      font-size: 24px;
+      color: #2D5016;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .tagline {
+      font-size: 11px;
+      color: #6E6E6E;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-top: 2px;
+    }
+
+    /* SECTIONS */
+    section {
+      background: #ffffffd9;
+      backdrop-filter: blur(5px);
+      padding: 18px 16px;
+      border-radius: 16px;
+      margin-top: 16px;
+      border: 1px solid #eaddc566;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    section h2 {
+      font-size: 18px;
+      margin-bottom: 6px;
+      color: #2D5016;
+    }
+
+    /* HERO */
+    .hero-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2D5016;
+      margin-bottom: 6px;
+    }
+
+    .hero-text {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 16px;
+      border-radius: 26px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      white-space: nowrap;
+      transition: 0.18s ease;
+      flex: 1;
+    }
+
+    .btn-primary {
+      background: #2D5016;
+      color: #fff;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      border: 1px solid #2D501633;
+      color: #2D5016;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-tertiary {
+      background: transparent;
+      border: 1px dashed #2D501666;
+      color: #2D5016;
+      flex-basis: 100%;
+    }
+
+    .btn-tertiary:active {
+      transform: scale(0.97);
+    }
+
+    /* HERO PREVIEW CARDS (TEXT ONLY) */
+    .hero-menu-label {
+      font-size: 11px;
+      color: #6E6E6E;
+      margin-bottom: 6px;
+    }
+
+    .hero-menu-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+    }
+
+    .hero-menu-scroll::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .hero-menu-scroll::-webkit-scrollbar-thumb {
+      background: #d3c7b4;
+      border-radius: 999px;
+    }
+
+    .hero-card {
+      min-width: 130px;
+      max-width: 150px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid #eae2d4;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, 0.04);
+      flex-shrink: 0;
+    }
+
+    .hero-card-title {
+      font-size: 11px;
+      color: #8B6B3F;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .hero-card-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #2D2D2D;
+      margin-bottom: 1px;
+    }
+
+    .hero-card-price {
+      font-size: 12px;
+      font-weight: 600;
+      color: #2D5016;
+    }
+
+    /* WHY PUREFOLK */
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .feature-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid #eaeaea;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .feature-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #2A2A2A;
+    }
+
+    .feature-text {
+      font-size: 11px;
+      color: #666;
+      line-height: 1.35;
+    }
+
+    /* TODAY'S MENU */
+    .menu-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .menu-thumb {
+      width: 65px;
+      height: 65px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #ddd;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+
+    .menu-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .menu-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #2D2D2D;
+    }
+
+    .menu-price {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2D5016;
+      margin-top: 2px;
+    }
+
+    .menu-desc {
+      font-size: 12px;
+      color: #666;
+      margin: 4px 0 6px;
+      line-height: 1.4;
+    }
+
+    .menu-actions .btn {
+      padding: 6px 12px;
+      font-size: 12px;
+      margin-top: 2px;
+      flex: 0 0 auto;
+    }
+
+    /* QUICK LINKS */
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .link-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid #e0d4c3;
+      font-size: 13px;
+      text-decoration: none;
+      color: #2D5016;
+    }
+
+    .link-btn span:last-child {
+      font-size: 14px;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12px;
+      color: #6D6D6D;
+      line-height: 1.6;
+    }
+
+    footer a {
+      color: #2D5016;
+      text-decoration: none;
+    }
+
+    @media (max-width: 360px) {
+      .hero-title {
+        font-size: 18px;
+      }
+      .btn {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-Redirecting to Purefolk…
+  <div class="container">
+
+    <!-- HEADER -->
+    <header>
+      <div class="logo-wrap">
+        <img src="images/logo.png" alt="Purefolk logo">
+      </div>
+      <div class="brand">PUREFOLK</div>
+      <div class="tagline">EAT PURE • LIVE PURE • FRESH COOKED</div>
+    </header>
+
+    <!-- HERO -->
+    <section>
+      <h1 class="hero-title">Fresh, clean vegetarian meals — cooked only after you order.</h1>
+      <p class="hero-text">
+        No junk. No heavy masala. No shortcuts. Just honest food that supports better digestion and calmer nights.
+      </p>
+
+      <!-- HERO BUTTONS -->
+      <div class="hero-buttons">
+        <!-- Order Now (Tally form) -->
+        <a
+          class="btn btn-primary"
+          href="https://tally.so/r/obbJBN"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Order Now
+        </a>
+
+        <!-- Order on WhatsApp (UID) -->
+        <button
+          type="button"
+          class="btn btn-secondary wa-order-btn"
+          data-item="General Order"
+        >
+          Order on WhatsApp
+        </button>
+
+        <!-- Scroll to Menu -->
+        <a class="btn btn-tertiary" href="#menu">View Menu</a>
+      </div>
+
+      <!-- HERO PREVIEW (TEXT CARDS) -->
+      <div class="hero-menu-label">Today’s specials · swipe →</div>
+      <div class="hero-menu-scroll">
+        <div class="hero-card">
+          <div class="hero-card-title">Taco</div>
+          <div class="hero-card-name">Pure Protein Taco</div>
+          <div class="hero-card-price">₹89</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-title">Wrap</div>
+          <div class="hero-card-name">Mediterranean Paneer Wrap</div>
+          <div class="hero-card-price">₹129</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-title">Bowl</div>
+          <div class="hero-card-name">Satvik Khichdi</div>
+          <div class="hero-card-price">₹79</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY PUREFOLK -->
+    <section>
+      <h2>Why Purefolk</h2>
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-title">💪 Clean Protein Meals</div>
+          <div class="feature-text">
+            Paneer, rajma, moong-based meals that are filling but not heavy.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">🍃 Light & Satvik</div>
+          <div class="feature-text">
+            Low oil, simple spices, no onion–garlic options for calmer digestion.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">🟩 100% Vegetarian</div>
+          <div class="feature-text">
+            Pure veg setup with Jain-friendly choices and clean ingredients.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-title">🕒 Cooked After You Order</div>
+          <div class="feature-text">
+            No batch cooking, no reheating – only fresh, small-batch meals.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TODAY'S MENU -->
+    <section id="menu">
+      <h2>Today’s Menu</h2>
+      <p style="font-size:12px; color:#6D6D6D; margin-bottom:10px;">
+        Fresh-cooked evening meals. Limited menu → higher quality.
+      </p>
+
+      <!-- KHICHDI -->
+      <div class="menu-item">
+        <div class="menu-thumb">
+          <img src="images/menu-khichdi.webp" alt="Satvik Khichdi">
+        </div>
+        <div>
+          <div class="menu-name">Satvik Khichdi</div>
+          <div class="menu-price">₹79</div>
+          <div class="menu-desc">
+            Light, soothing moong dal + rice. Jain-friendly and easy to digest.
+          </div>
+          <div class="menu-actions">
+            <button
+              class="btn btn-secondary wa-order-btn"
+              data-item="Satvik Khichdi"
+            >
+              Pre-Order
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TACO -->
+      <div class="menu-item">
+        <div class="menu-thumb">
+          <img src="images/menu-taco.webp" alt="Pure Protein Taco">
+        </div>
+        <div>
+          <div class="menu-name">Pure Protein Taco</div>
+          <div class="menu-price">₹89</div>
+          <div class="menu-desc">
+            Whole-wheat base with paneer + rajma crumble, hung curd and clean spices.
+          </div>
+          <div class="menu-actions">
+            <button
+              class="btn btn-secondary wa-order-btn"
+              data-item="Pure Protein Taco"
+            >
+              Pre-Order
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WRAP -->
+      <div class="menu-item">
+        <div class="menu-thumb">
+          <img src="images/menu-wrap.webp" alt="Mediterranean Paneer Wrap">
+        </div>
+        <div>
+          <div class="menu-name">Mediterranean Paneer Wrap</div>
+          <div class="menu-price">₹129</div>
+          <div class="menu-desc">
+            Yoghurt-herb paneer, soft tortilla and crunchy veggies – fresh, modern, vegetarian wrap.
+          </div>
+          <div class="menu-actions">
+            <button
+              class="btn btn-secondary wa-order-btn"
+              data-item="Mediterranean Paneer Wrap"
+            >
+              Pre-Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK LINKS -->
+    <section>
+      <h2>Quick Links</h2>
+      <div class="link-list">
+        <a class="link-btn" href="menu.html">
+          <span>View Full Menu</span><span>➝</span>
+        </a>
+        <a class="link-btn" href="delivery.html">
+          <span>Delivery Info</span><span>➝</span>
+        </a>
+
+<a class="link-btn" href="review.html">
+    <span>Reviews</span><span>➝</span>
+</a>
+<a class="link-btn" href="subscription.html">
+    <span>Subscription Plans</span><span>➝</span>
+</a>
+
+        <a
+          class="link-btn"
+          href="https://tally.so/r/obbJBN"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>Online Order Form</span><span>➝</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section>
+      <h2>How Purefolk Works</h2>
+      <p style="font-size:13px; color:#444; line-height:1.5;">
+        1. You order first — we start cooking only after your request.<br>
+        2. Small-batch, freshly prepared meals with simple, clean ingredients.<br>
+        3. Delivered between <strong>7–9 PM</strong> (Free up to 5 KM).
+      </p>
+    </section>
+
+    <!-- PUREFOLK PROMISE -->
+    <section>
+      <h2>Purefolk Promise</h2>
+      <p style="font-size:13px; color:#444; line-height:1.5;">
+        Pure ingredients. Simple recipes. Honest pricing.<br><br>
+        No artificial flavours. No deep frying. No heavy masala.<br>
+        Just clean food that feels good in body and mind.
+      </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <strong>PUREFOLK</strong><br>
+      Nalasopara · Mahesh Park<br>
+      Clean, vegetarian, everyday meals.<br><br>
+      WhatsApp: <strong>8010342375</strong><br>
+      Order Form: <a href="https://tally.so/r/obbJBN">tally.so/r/obbJBN</a><br><br>
+      © 2026 Purefolk
+    </footer>
+
+  </div>
+
+  <!-- WHATSAPP ORDER SCRIPT (UID SYSTEM) -->
+  <script>
+    const PUREFOLK_WHATSAPP = "918010342375";
+
+    function generateOrderId() {
+      const now = new Date();
+      const yy = String(now.getFullYear()).slice(-2);
+      const mm = String(now.getMonth() + 1).padStart(2, "0");
+      const dd = String(now.getDate()).padStart(2, "0");
+      const hh = String(now.getHours()).padStart(2, "0");
+      const min = String(now.getMinutes()).padStart(2, "0");
+      const ss = String(now.getSeconds()).padStart(2, "0");
+      return `PF-${yy}${mm}${dd}-${hh}${min}${ss}`;
+    }
+
+    function openWhatsApp(itemName) {
+      const orderId = generateOrderId();
+
+      const msg = [
+        "Namaste Purefolk 👋",
+        "",
+        "I'd like to place an order:",
+        "",
+        `Order ID: ${orderId}`,
+        `Item: ${itemName}`,
+        "Qty: 1",
+        "",
+        "Name:",
+        "Address:",
+        "Area (Nalasopara / Mahesh Park):",
+        "Landmark:",
+        "Delivery Time: 7–9 PM",
+        "Jain Option: Yes / No",
+        "Notes:",
+        "Payment Mode: Cash / UPI"
+      ].join("\n");
+
+      window.location.href = `https://wa.me/${PUREFOLK_WHATSAPP}?text=${encodeURIComponent(msg)}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".wa-order-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.getAttribute("data-item") || "General Order";
+          openWhatsApp(item);
+        });
+      });
+    });
+  </script>
 </body>
-</html>
+  </html>
