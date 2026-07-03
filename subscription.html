@@ -174,33 +174,51 @@
   </style>
 
   <script>
-    // Generate UID for Subscription Orders
-    function makeUID() {
-      const now = new Date();
-      return "PF-SUB-" +
-        now.getFullYear().toString().slice(-2) +
-        (now.getMonth()+1).toString().padStart(2,'0') +
-        now.getDate().toString().padStart(2,'0') + "-" +
-        Math.floor(1000 + Math.random() * 9000);
-    }
+  // Generate UID for Subscription Orders
+  function makeUID() {
+    const now = new Date();
 
-    function startWhatsApp(plan) {
-      const uid = makeUID();
-      const msg =
-        `Namaste PUREFOLK 👋%0A` +
-        `I want to start the *${plan}* subscription.%0A` +
-        `My Subscription ID: ${uid}%0A%0A` +
-        `Please guide for next steps.`;
+    return "PF-SUB-" +
+      now.getFullYear().toString().slice(-2) +
+      String(now.getMonth() + 1).padStart(2, "0") +
+      String(now.getDate()).padStart(2, "0") +
+      "-" +
+      Math.floor(1000 + Math.random() * 9000);
+  }
 
-      window.open(`https://wa.me/8010342375?text=${msg}`, "_blank");
-    }
+  // Open WhatsApp with subscription details
+  function startWhatsApp(plan) {
 
-    function openForm(plan) {
-      const uid = makeUID();
-      const link = `https://tally.so/r/jae5WQ?plan=${encodeURIComponent(plan)}&uid=${uid}`;
-      window.open(link, "_blank");
-    }
-  </script>
+    const uid = makeUID();
+
+    const message = `Hi PUREFOLK 👋
+
+I would like to subscribe to the ${plan}.
+
+Subscription ID: ${uid}
+
+Please guide me with the next steps.`;
+
+    const phone = "918010342375";
+
+    const whatsappURL =
+      `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappURL, "_blank");
+  }
+
+  // Open Tally Form
+  function openForm(plan) {
+
+    const uid = makeUID();
+
+    const tallyURL =
+      `https://tally.so/r/jae5WQ?plan=${encodeURIComponent(plan)}&uid=${encodeURIComponent(uid)}`;
+
+    window.open(tallyURL, "_blank");
+  }
+</script>
+
 
 </head>
 
