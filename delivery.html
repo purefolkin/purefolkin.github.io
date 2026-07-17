@@ -541,13 +541,14 @@
       return km <= 5 ? 0 : 30;
     }
 
-    function calcMealPrice(mealValue) {
-      if (!mealValue) return 0;
-      if (mealValue.includes("₹89")) return 89;
-      if (mealValue.includes("₹79")) return 79;
-      return 0;
-    }
-
+function calcMealPrice(mealValue) {
+  if (!mealValue) return 0;
+  if (mealValue.includes("₹129")) return 129;
+  if (mealValue.includes("₹89"))  return 89;
+  if (mealValue.includes("₹79"))  return 79;
+  return 0;
+}
+  
     function openWhatsApp(text) {
       const msg = encodeURIComponent(text);
       const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
