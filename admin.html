@@ -1,5 +1,7 @@
 
 cat > /mnt/user-data/outputs/admin.html << 'ENDOFFILE'
+
+  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -826,6 +828,8 @@ document.addEventListener('keydown', e => {
 </script>
 </body>
 </html>
+
+  
 ENDOFFILE
 echo "✅ admin.html created"
 wc -l /mnt/user-data/outputs/admin.html
