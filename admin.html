@@ -1,0 +1,835 @@
+
+cat > /mnt/user-data/outputs/admin.html << 'ENDOFFILE'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purefolk Admin</title>
+<meta name="robots" content="noindex,nofollow">
+
+<!-- Supabase CDN — must load before any script uses it -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+
+<style>
+:root {
+  --cream:  #F7F2E8;
+  --sage:   #A8B5A2;
+  --forest: #4D625A;
+  --dark:   #2A3D35;
+  --border: #E0DBD0;
+  --bg:     #EDE8DC;
+  --white:  #FFFFFF;
+  --red:    #CC4444;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,serif;background:var(--bg);color:var(--forest);font-size:14px}
+
+/* ── LOGIN ── */
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:36px 28px;width:100%;max-width:340px;text-align:center}
+.logo{font-size:20px;letter-spacing:5px;color:var(--dark)}
+.logo-sub{font-size:11px;letter-spacing:2px;color:var(--sage);margin:6px 0 28px}
+
+/* ── FORM ── */
+.field{margin-bottom:12px;text-align:left}
+.lbl{display:block;font-size:10px;letter-spacing:1.5px;color:var(--sage);margin-bottom:4px;text-transform:uppercase}
+input[type=email],input[type=password],input[type=text],input[type=number],input[type=url],select,textarea{
+  width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:Georgia,serif;font-size:13px;color:var(--forest);background:var(--cream);outline:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--sage);background:var(--white)}
+textarea{resize:vertical;min-height:56px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:8px;
+  font-family:Georgia,serif;font-size:13px;cursor:pointer;transition:all .15s}
+.btn-p{background:var(--forest);color:var(--cream)}
+.btn-p:hover{background:var(--dark)}
+.btn-g{background:var(--border);color:var(--forest)}
+.btn-g:hover{background:#D4CEBE}
+.btn-r{background:#FFE8E8;color:var(--red);border:1px solid #FFC8C8}
+.btn-full{width:100%;justify-content:center}
+.btn-sm{padding:6px 12px;font-size:12px}
+
+/* ── DASHBOARD ── */
+.dash{display:none}
+.topbar{background:var(--dark);color:var(--cream);padding:14px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;z-index:100}
+.topbar-brand{font-size:13px;letter-spacing:4px}
+.topbar-right{display:flex;gap:10px;align-items:center}
+.topbar-btn{background:none;border:1px solid rgba(168,181,162,.5);color:var(--sage);
+  padding:5px 12px;border-radius:6px;font-size:11px;letter-spacing:1px;
+  cursor:pointer;font-family:Georgia,serif;transition:border-color .2s}
+.topbar-btn:hover{border-color:var(--sage);color:var(--cream)}
+
+/* ── NAVIGATION ── */
+.nav{background:var(--white);border-bottom:1px solid var(--border);
+  display:flex;overflow-x:auto;padding:0 16px}
+.nav::-webkit-scrollbar{display:none}
+.nav-tab{padding:14px 16px;font-size:11px;letter-spacing:1.5px;cursor:pointer;
+  border-bottom:2px solid transparent;white-space:nowrap;color:var(--sage);
+  text-transform:uppercase;user-select:none;transition:all .15s}
+.nav-tab:hover{color:var(--forest)}
+.nav-tab.on{color:var(--forest);border-bottom-color:var(--forest);font-weight:bold}
+
+/* ── MAIN ── */
+.main{padding:20px;max-width:820px;margin:0 auto}
+.section{display:none}
+.section.on{display:block}
+.sec-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.sec-hd h2{font-size:15px;letter-spacing:.5px}
+
+/* ── CARD ── */
+.card{background:var(--white);border-radius:12px;border:1.5px solid var(--border);overflow:hidden}
+
+/* ── STATUS BAR ── */
+.status-bar{background:var(--white);border-radius:12px;border:1.5px solid var(--border);
+  padding:14px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.status-bar h3{font-size:14px}
+.status-bar p{font-size:12px;color:var(--sage);margin-top:2px}
+
+/* ── PRODUCT ROWS ── */
+.prow{display:flex;align-items:center;gap:14px;padding:14px 16px;
+  border-bottom:1px solid var(--border);transition:background .12s}
+.prow:last-child{border-bottom:none}
+.prow:hover{background:var(--cream)}
+.prow-thumb{width:50px;height:50px;border-radius:8px;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden}
+.prow-thumb img{width:100%;height:100%;object-fit:cover}
+.prow-info{flex:1;min-width:0}
+.prow-name{font-size:14px;font-weight:bold;margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.tag{font-size:10px;padding:2px 7px;border-radius:20px}
+.t-jain{background:#FFF3CD;color:#8A6500}
+.t-satvik{background:#E8F5E0;color:#2E7D32}
+.t-off{background:#FFE8E8;color:var(--red)}
+.prow-price{font-size:16px;font-weight:bold;white-space:nowrap;flex-shrink:0}
+.prow-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+
+/* ── TOGGLE ── */
+.tog{position:relative;width:38px;height:20px;flex-shrink:0}
+.tog input{opacity:0;position:absolute;width:0;height:0}
+.tog-track{position:absolute;inset:0;background:var(--border);border-radius:20px;
+  cursor:pointer;transition:background .2s}
+.tog-track::after{content:'';position:absolute;width:14px;height:14px;
+  top:3px;left:3px;background:white;border-radius:50%;transition:transform .2s}
+.tog input:checked~.tog-track{background:var(--sage)}
+.tog input:checked~.tog-track::after{transform:translateX(18px)}
+
+/* ── SETTINGS ── */
+.set-group{background:var(--white);border-radius:12px;border:1.5px solid var(--border);
+  padding:18px;margin-bottom:14px}
+.set-title{font-size:10px;letter-spacing:2px;color:var(--sage);text-transform:uppercase;
+  margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(42,61,53,.5);
+  z-index:200;align-items:center;justify-content:center;padding:16px}
+.modal-bg.on{display:flex}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:500px;
+  max-height:90vh;overflow-y:auto;padding:22px}
+.modal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-hd h3{font-size:15px}
+.modal-x{background:none;border:none;font-size:20px;cursor:pointer;color:var(--sage)}
+.modal-x:hover{color:var(--forest)}
+.modal-ft{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.modal-ft .btn-r{margin-left:auto}
+
+/* ── CHECKS ── */
+.check-row{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:4px}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
+.chk input[type=checkbox]{width:15px;height:15px;margin:0;padding:0;accent-color:var(--forest)}
+
+/* ── ALERT ── */
+.alert{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px}
+.a-ok{background:#E8F5E0;color:#2E7D32;border:1px solid #C5E0B4}
+.a-err{background:#FFE8E8;color:var(--red);border:1px solid #FFC8C8}
+.state{text-align:center;padding:40px 20px;color:var(--sage);font-size:13px}
+
+/* ── AREA ROWS ── */
+.arow{display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--border)}
+.arow:last-child{border-bottom:none}
+.arow-name{font-size:13px}
+.arow-km{font-size:12px;color:var(--sage)}
+
+@media(max-width:480px){
+  .two-col{grid-template-columns:1fr}
+  .prow-price{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ LOGIN ════════════════════ -->
+<div class="login" id="loginWrap">
+  <div class="login-box">
+    <div class="logo">PUREFOLK</div>
+    <div class="logo-sub">Admin Panel</div>
+    <div id="loginMsg"></div>
+    <div class="field">
+      <span class="lbl">Email</span>
+      <input type="email" id="email" placeholder="your@email.com" />
+    </div>
+    <div class="field">
+      <span class="lbl">Password</span>
+      <input type="password" id="pass" placeholder="••••••••" />
+    </div>
+    <button class="btn btn-p btn-full" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- ════════════════════ DASHBOARD ════════════════════ -->
+<div class="dash" id="dashWrap">
+
+  <div class="topbar">
+    <div class="topbar-brand">PUREFOLK ADMIN</div>
+    <div class="topbar-right">
+      <a href="https://purefolkin.github.io" target="_blank" class="topbar-btn">View Site</a>
+      <button class="topbar-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-tab on"  onclick="showTab('products',this)">Products</div>
+    <div class="nav-tab"     onclick="showTab('delivery',this)">Delivery</div>
+    <div class="nav-tab"     onclick="showTab('plans',this)">Subscriptions</div>
+    <div class="nav-tab"     onclick="showTab('settings',this)">Settings</div>
+  </div>
+
+  <div class="main">
+    <div id="mainAlert"></div>
+
+    <!-- PRODUCTS TAB -->
+    <div class="section on" id="tab-products">
+      <div class="status-bar">
+        <div>
+          <h3>Accepting Orders</h3>
+          <p>Toggle off to pause all orders instantly</p>
+        </div>
+        <label class="tog">
+          <input type="checkbox" id="ordersToggle" onchange="setOrders(this.checked)" />
+          <span class="tog-track"></span>
+        </label>
+      </div>
+      <div class="sec-hd">
+        <h2>Menu Items</h2>
+        <button class="btn btn-p btn-sm" onclick="openAdd()">+ Add Product</button>
+      </div>
+      <div class="card" id="productList">
+        <div class="state">Loading…</div>
+      </div>
+    </div>
+
+    <!-- DELIVERY TAB -->
+    <div class="section" id="tab-delivery">
+      <div class="set-group">
+        <div class="set-title">Delivery Charge Rules</div>
+        <div class="two-col">
+          <div class="field">
+            <span class="lbl">Free delivery up to (KM)</span>
+            <input type="number" id="freeKm" placeholder="5" step="0.5" />
+          </div>
+          <div class="field">
+            <span class="lbl">Charge beyond that (₹)</span>
+            <input type="number" id="beyondCharge" placeholder="30" />
+          </div>
+        </div>
+        <button class="btn btn-p btn-sm" onclick="saveRules()">Save Rules</button>
+      </div>
+      <div class="sec-hd">
+        <h2>Delivery Areas</h2>
+        <button class="btn btn-p btn-sm" onclick="openAreaAdd()">+ Add Area</button>
+      </div>
+      <div class="card" id="areaList">
+        <div class="state">Loading…</div>
+      </div>
+    </div>
+
+    <!-- SUBSCRIPTIONS TAB -->
+    <div class="section" id="tab-plans">
+      <div class="sec-hd">
+        <h2>Subscription Plans</h2>
+        <button class="btn btn-p btn-sm" onclick="openPlanAdd()">+ Add Plan</button>
+      </div>
+      <div class="card" id="planList">
+        <div class="state">Loading…</div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div class="section" id="tab-settings">
+      <div class="sec-hd"><h2>Site Settings</h2></div>
+      <div class="set-group">
+        <div class="set-title">Contact & Ordering</div>
+        <div class="field">
+          <span class="lbl">WhatsApp Number (with country code)</span>
+          <input type="text" id="s_wa" placeholder="918010342375" />
+        </div>
+        <div class="field">
+          <span class="lbl">Tally Order Form URL</span>
+          <input type="url" id="s_torder" placeholder="https://tally.so/r/obbJBN" />
+        </div>
+        <div class="field">
+          <span class="lbl">Tally Subscription Form URL</span>
+          <input type="url" id="s_tsub" placeholder="https://tally.so/r/jae5WQ" />
+        </div>
+      </div>
+      <div class="set-group">
+        <div class="set-title">Announcement Banner (leave blank to hide)</div>
+        <div class="field">
+          <input type="text" id="s_ann" placeholder="e.g. Closed on 15 Aug — Happy Independence Day!" />
+        </div>
+      </div>
+      <button class="btn btn-p" onclick="saveSettings()">Save Settings</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════ PRODUCT MODAL ════════ -->
+<div class="modal-bg" id="productModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3 id="pTitle">Add Product</h3>
+      <button class="modal-x" onclick="closeModal('productModal')">✕</button>
+    </div>
+    <input type="hidden" id="p_id" />
+    <div class="field"><span class="lbl">Name *</span>
+      <input type="text" id="p_name" placeholder="Pure Protein Taco" /></div>
+    <div class="field"><span class="lbl">Description</span>
+      <textarea id="p_desc" placeholder="Whole-wheat wrap • Rajma + paneer…"></textarea></div>
+    <div class="two-col">
+      <div class="field"><span class="lbl">Price ₹ *</span>
+        <input type="number" id="p_price" placeholder="89" /></div>
+      <div class="field"><span class="lbl">Original Price ₹ (strikethrough)</span>
+        <input type="number" id="p_orig" placeholder="99" /></div>
+    </div>
+    <div class="field"><span class="lbl">Image Path</span>
+      <input type="text" id="p_img" placeholder="images/menu-taco.webp" /></div>
+    <div class="field"><span class="lbl">Image Alt Text (SEO)</span>
+      <input type="text" id="p_alt" placeholder="Pure Protein Taco by Purefolk" /></div>
+    <div class="field"><span class="lbl">Tally Param (meal name for order form)</span>
+      <input type="text" id="p_tally" placeholder="Pure Protein Taco" /></div>
+    <div class="field"><span class="lbl">Category</span>
+      <select id="p_cat">
+        <option value="food">Food</option>
+        <option value="drink">Drink</option>
+        <option value="special">Special</option>
+      </select></div>
+    <div class="field"><span class="lbl">Properties</span>
+      <div class="check-row">
+        <label class="chk"><input type="checkbox" id="p_jain" /> Jain Friendly</label>
+        <label class="chk"><input type="checkbox" id="p_satvik" checked /> Satvik</label>
+        <label class="chk"><input type="checkbox" id="p_avail" checked /> Available Today</label>
+      </div></div>
+    <div class="field"><span class="lbl">Sort Order (1 = first on menu)</span>
+      <input type="number" id="p_sort" placeholder="1" /></div>
+    <div class="modal-ft">
+      <button class="btn btn-p" onclick="saveProduct()">Save</button>
+      <button class="btn btn-g" onclick="closeModal('productModal')">Cancel</button>
+      <button class="btn btn-r" id="p_del" style="display:none" onclick="deleteProduct()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ AREA MODAL ════════ -->
+<div class="modal-bg" id="areaModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>Delivery Area</h3>
+      <button class="modal-x" onclick="closeModal('areaModal')">✕</button>
+    </div>
+    <input type="hidden" id="a_id" />
+    <div class="field"><span class="lbl">Area Name *</span>
+      <input type="text" id="a_name" placeholder="Achole Road – Chandan Naka" /></div>
+    <div class="field"><span class="lbl">Distance from Mahesh Park (KM)</span>
+      <input type="number" id="a_km" placeholder="2.0" step="0.1" /></div>
+    <div class="modal-ft">
+      <button class="btn btn-p" onclick="saveArea()">Save</button>
+      <button class="btn btn-g" onclick="closeModal('areaModal')">Cancel</button>
+      <button class="btn btn-r" id="a_del" style="display:none" onclick="deleteArea()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ PLAN MODAL ════════ -->
+<div class="modal-bg" id="planModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3 id="planTitle">Add Plan</h3>
+      <button class="modal-x" onclick="closeModal('planModal')">✕</button>
+    </div>
+    <input type="hidden" id="pl_id" />
+    <div class="field"><span class="lbl">Plan Name *</span>
+      <input type="text" id="pl_name" placeholder="3-Day Lite Trial" /></div>
+    <div class="field"><span class="lbl">Tagline</span>
+      <input type="text" id="pl_tag" placeholder="Commitment-free test run" /></div>
+    <div class="two-col">
+      <div class="field"><span class="lbl">Days</span>
+        <input type="number" id="pl_days" placeholder="3" /></div>
+      <div class="field"><span class="lbl">Sort Order</span>
+        <input type="number" id="pl_sort" placeholder="1" /></div>
+    </div>
+    <div class="two-col">
+      <div class="field"><span class="lbl">Price ₹ *</span>
+        <input type="number" id="pl_price" placeholder="270" /></div>
+      <div class="field"><span class="lbl">Original Price ₹</span>
+        <input type="number" id="pl_orig" placeholder="297" /></div>
+    </div>
+    <div class="field">
+      <div class="check-row">
+        <label class="chk"><input type="checkbox" id="pl_active" checked /> Active (show on site)</label>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-p" onclick="savePlan()">Save</button>
+      <button class="btn btn-g" onclick="closeModal('planModal')">Cancel</button>
+      <button class="btn btn-r" id="pl_del" style="display:none" onclick="deletePlan()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ SCRIPT ════════════════════ -->
+<script>
+// ═══════════════════════════════════════════════════════════
+//  STEP 1 — Replace these two values with yours from Supabase
+//  Dashboard → Project Settings → API
+//  Copy "Project URL" and "anon public" key
+// ═══════════════════════════════════════════════════════════
+const SUPA_URL = 'PASTE_YOUR_PROJECT_URL_HERE';
+const SUPA_KEY = 'PASTE_YOUR_ANON_KEY_HERE';
+// ═══════════════════════════════════════════════════════════
+
+// Data stores — products and areas stored here for editing
+const STORE = { products:{}, areas:{}, plans:{} };
+let db;
+
+// ── INIT ──────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+  checkAuth();
+});
+
+async function checkAuth() {
+  const { data:{ session } } = await db.auth.getSession();
+  if (session) showDash();
+}
+
+// ── AUTH ──────────────────────────────────────────────────
+async function doLogin() {
+  const email = document.getElementById('email').value.trim();
+  const pass  = document.getElementById('pass').value;
+  if (!email || !pass) return loginAlert('Enter email and password.', true);
+  const { error } = await db.auth.signInWithPassword({ email, password: pass });
+  if (error) loginAlert('Wrong email or password.', true);
+  else showDash();
+}
+
+async function doLogout() {
+  await db.auth.signOut();
+  document.getElementById('dashWrap').style.display = 'none';
+  document.getElementById('loginWrap').style.display = 'flex';
+}
+
+function showDash() {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('dashWrap').style.display = 'block';
+  loadProducts();
+  loadOrderStatus();
+}
+
+// ── NAVIGATION ────────────────────────────────────────────
+function showTab(name, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('tab-' + name).classList.add('on');
+  el.classList.add('on');
+  if (name === 'delivery') { loadAreas(); loadRules(); }
+  if (name === 'plans')    loadPlans();
+  if (name === 'settings') loadSettings();
+}
+
+// ── PRODUCTS ──────────────────────────────────────────────
+async function loadProducts() {
+  const el = document.getElementById('productList');
+  el.innerHTML = '<div class="state">Loading…</div>';
+  const { data, error } = await db
+    .from('pf_products').select('*').order('sort_order');
+  if (error) { el.innerHTML = `<div class="state">Error: ${error.message}</div>`; return; }
+  if (!data?.length) {
+    el.innerHTML = `<div class="state">No products yet.<br><br>
+      <button class="btn btn-p btn-sm" onclick="openAdd()">Add first product</button></div>`;
+    return;
+  }
+  // Store for editing
+  data.forEach(p => { STORE.products[p.id] = p; });
+  el.innerHTML = data.map(p => `
+    <div class="prow">
+      <div class="prow-thumb">
+        ${p.image_path
+          ? `<img src="${esc(p.image_path)}" alt="${esc(p.image_alt||p.name)}" onerror="this.style.display='none'">`
+          : catEmoji(p.category)}
+      </div>
+      <div class="prow-info">
+        <div class="prow-name">${esc(p.name)}</div>
+        <div class="prow-tags">
+          ${p.is_jain   ? '<span class="tag t-jain">Jain</span>'   : ''}
+          ${p.is_satvik ? '<span class="tag t-satvik">Satvik</span>' : ''}
+          ${!p.is_available ? '<span class="tag t-off">Off Today</span>' : ''}
+        </div>
+      </div>
+      <div class="prow-price">₹${p.price}</div>
+      <div class="prow-actions">
+        <label class="tog" title="Available today">
+          <input type="checkbox" ${p.is_available ? 'checked' : ''}
+            onchange="toggleProduct('${p.id}',this.checked)" />
+          <span class="tog-track"></span>
+        </label>
+        <button class="btn btn-g btn-sm" onclick="openEdit('${p.id}')">Edit</button>
+      </div>
+    </div>`).join('');
+}
+
+function openAdd() {
+  document.getElementById('pTitle').textContent = 'Add Product';
+  clearPForm();
+  document.getElementById('p_del').style.display = 'none';
+  openModal('productModal');
+}
+
+function openEdit(id) {
+  const p = STORE.products[id];
+  if (!p) return;
+  document.getElementById('pTitle').textContent = 'Edit Product';
+  document.getElementById('p_id').value    = p.id;
+  document.getElementById('p_name').value  = p.name          || '';
+  document.getElementById('p_desc').value  = p.description   || '';
+  document.getElementById('p_price').value = p.price         || '';
+  document.getElementById('p_orig').value  = p.original_price|| '';
+  document.getElementById('p_img').value   = p.image_path    || '';
+  document.getElementById('p_alt').value   = p.image_alt     || '';
+  document.getElementById('p_tally').value = p.tally_param   || p.name || '';
+  document.getElementById('p_cat').value   = p.category      || 'food';
+  document.getElementById('p_jain').checked  = p.is_jain    !== false;
+  document.getElementById('p_satvik').checked= p.is_satvik  !== false;
+  document.getElementById('p_avail').checked = p.is_available!== false;
+  document.getElementById('p_sort').value  = p.sort_order    || 0;
+  document.getElementById('p_del').style.display = 'inline-flex';
+  openModal('productModal');
+}
+
+async function saveProduct() {
+  const id    = document.getElementById('p_id').value;
+  const name  = document.getElementById('p_name').value.trim();
+  const price = parseInt(document.getElementById('p_price').value);
+  if (!name || !price) return mainAlert('Name and price are required.', true);
+  const row = {
+    name,
+    description:    document.getElementById('p_desc').value  || null,
+    price,
+    original_price: parseInt(document.getElementById('p_orig').value) || null,
+    image_path:     document.getElementById('p_img').value   || null,
+    image_alt:      document.getElementById('p_alt').value   || null,
+    tally_param:    document.getElementById('p_tally').value || name,
+    category:       document.getElementById('p_cat').value,
+    is_jain:        document.getElementById('p_jain').checked,
+    is_satvik:      document.getElementById('p_satvik').checked,
+    is_available:   document.getElementById('p_avail').checked,
+    sort_order:     parseInt(document.getElementById('p_sort').value) || 0,
+  };
+  let err;
+  if (id) ({ error:err } = await db.from('pf_products').update(row).eq('id', id));
+  else    ({ error:err } = await db.from('pf_products').insert([row]));
+  closeModal('productModal');
+  if (err) mainAlert('Error: ' + err.message, true);
+  else { mainAlert(id ? 'Product updated.' : 'Product added.'); loadProducts(); }
+}
+
+async function deleteProduct() {
+  const id = document.getElementById('p_id').value;
+  if (!id || !confirm('Delete this product? Cannot be undone.')) return;
+  await db.from('pf_products').delete().eq('id', id);
+  closeModal('productModal');
+  mainAlert('Product deleted.');
+  loadProducts();
+}
+
+async function toggleProduct(id, val) {
+  await db.from('pf_products').update({ is_available: val }).eq('id', id);
+}
+
+function clearPForm() {
+  ['p_id','p_name','p_desc','p_price','p_orig','p_img','p_alt','p_tally','p_sort']
+    .forEach(i => { document.getElementById(i).value = ''; });
+  document.getElementById('p_cat').value   = 'food';
+  document.getElementById('p_jain').checked  = true;
+  document.getElementById('p_satvik').checked= true;
+  document.getElementById('p_avail').checked = true;
+}
+
+// ── ORDERS STATUS ─────────────────────────────────────────
+async function loadOrderStatus() {
+  const { data } = await db.from('pf_settings').select('is_accepting_orders').single();
+  if (data) document.getElementById('ordersToggle').checked = data.is_accepting_orders !== false;
+}
+
+async function setOrders(val) {
+  const { data } = await db.from('pf_settings').select('id').single();
+  if (data) {
+    await db.from('pf_settings').update({ is_accepting_orders: val }).eq('id', data.id);
+    mainAlert(val ? 'Now accepting orders.' : 'Orders paused.');
+  }
+}
+
+// ── DELIVERY AREAS ────────────────────────────────────────
+async function loadAreas() {
+  const el = document.getElementById('areaList');
+  el.innerHTML = '<div class="state">Loading…</div>';
+  const { data, error } = await db
+    .from('pf_delivery_areas').select('*').order('distance_km');
+  if (error || !data?.length) {
+    el.innerHTML = '<div class="state">No areas yet.</div>'; return;
+  }
+  data.forEach(a => { STORE.areas[a.id] = a; });
+  el.innerHTML = data.map(a => `
+    <div class="arow">
+      <div>
+        <div class="arow-name">${esc(a.name)}</div>
+        <div class="arow-km">~${a.distance_km} KM from Mahesh Park</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <label class="tog">
+          <input type="checkbox" ${a.is_active ? 'checked' : ''}
+            onchange="toggleArea('${a.id}',this.checked)" />
+          <span class="tog-track"></span>
+        </label>
+        <button class="btn btn-g btn-sm" onclick="openAreaEdit('${a.id}')">Edit</button>
+      </div>
+    </div>`).join('');
+}
+
+async function loadRules() {
+  const { data } = await db.from('pf_delivery_rules').select('*').single();
+  if (data) {
+    document.getElementById('freeKm').value     = data.free_up_to_km;
+    document.getElementById('beyondCharge').value = data.beyond_charge;
+  }
+}
+
+async function saveRules() {
+  const km  = parseFloat(document.getElementById('freeKm').value)     || 5;
+  const chg = parseInt(document.getElementById('beyondCharge').value)  || 30;
+  const { data } = await db.from('pf_delivery_rules').select('id').single();
+  let err;
+  if (data)
+    ({ error:err } = await db.from('pf_delivery_rules').update({ free_up_to_km:km, beyond_charge:chg }).eq('id', data.id));
+  else
+    ({ error:err } = await db.from('pf_delivery_rules').insert([{ free_up_to_km:km, beyond_charge:chg }]));
+  if (err) mainAlert('Error saving rules.', true);
+  else mainAlert('Delivery rules saved.');
+}
+
+function openAreaAdd() {
+  document.getElementById('a_id').value   = '';
+  document.getElementById('a_name').value = '';
+  document.getElementById('a_km').value   = '';
+  document.getElementById('a_del').style.display = 'none';
+  openModal('areaModal');
+}
+
+function openAreaEdit(id) {
+  const a = STORE.areas[id];
+  if (!a) return;
+  document.getElementById('a_id').value   = a.id;
+  document.getElementById('a_name').value = a.name;
+  document.getElementById('a_km').value   = a.distance_km;
+  document.getElementById('a_del').style.display = 'inline-flex';
+  openModal('areaModal');
+}
+
+async function saveArea() {
+  const id   = document.getElementById('a_id').value;
+  const name = document.getElementById('a_name').value.trim();
+  const km   = parseFloat(document.getElementById('a_km').value) || 0;
+  if (!name) return;
+  let err;
+  if (id) ({ error:err } = await db.from('pf_delivery_areas').update({ name, distance_km:km }).eq('id', id));
+  else    ({ error:err } = await db.from('pf_delivery_areas').insert([{ name, distance_km:km, is_active:true }]));
+  closeModal('areaModal');
+  if (err) mainAlert('Error: ' + err.message, true);
+  else { mainAlert('Area saved.'); loadAreas(); }
+}
+
+async function deleteArea() {
+  const id = document.getElementById('a_id').value;
+  if (!id || !confirm('Delete this area?')) return;
+  await db.from('pf_delivery_areas').delete().eq('id', id);
+  closeModal('areaModal');
+  mainAlert('Area deleted.');
+  loadAreas();
+}
+
+async function toggleArea(id, val) {
+  await db.from('pf_delivery_areas').update({ is_active: val }).eq('id', id);
+}
+
+// ── SUBSCRIPTION PLANS ────────────────────────────────────
+async function loadPlans() {
+  const el = document.getElementById('planList');
+  el.innerHTML = '<div class="state">Loading…</div>';
+  const { data, error } = await db
+    .from('pf_subscription_plans').select('*').order('sort_order');
+  if (error || !data?.length) {
+    el.innerHTML = '<div class="state">No plans yet.</div>'; return;
+  }
+  data.forEach(p => { STORE.plans[p.id] = p; });
+  el.innerHTML = data.map(p => `
+    <div class="prow">
+      <div class="prow-info">
+        <div class="prow-name">${esc(p.name)}</div>
+        <div style="font-size:12px;color:var(--sage);margin-top:2px">${p.days} days · ₹${p.price}</div>
+      </div>
+      <div class="prow-actions">
+        <label class="tog">
+          <input type="checkbox" ${p.is_active ? 'checked' : ''}
+            onchange="togglePlan('${p.id}',this.checked)" />
+          <span class="tog-track"></span>
+        </label>
+        <button class="btn btn-g btn-sm" onclick="openPlanEdit('${p.id}')">Edit</button>
+      </div>
+    </div>`).join('');
+}
+
+function openPlanAdd() {
+  document.getElementById('planTitle').textContent = 'Add Plan';
+  ['pl_id','pl_name','pl_tag','pl_days','pl_price','pl_orig','pl_sort']
+    .forEach(i => { document.getElementById(i).value = ''; });
+  document.getElementById('pl_active').checked = true;
+  document.getElementById('pl_del').style.display = 'none';
+  openModal('planModal');
+}
+
+function openPlanEdit(id) {
+  const p = STORE.plans[id];
+  if (!p) return;
+  document.getElementById('planTitle').textContent = 'Edit Plan';
+  document.getElementById('pl_id').value    = p.id;
+  document.getElementById('pl_name').value  = p.name           || '';
+  document.getElementById('pl_tag').value   = p.tagline        || '';
+  document.getElementById('pl_days').value  = p.days           || '';
+  document.getElementById('pl_price').value = p.price          || '';
+  document.getElementById('pl_orig').value  = p.original_price || '';
+  document.getElementById('pl_sort').value  = p.sort_order     || 0;
+  document.getElementById('pl_active').checked = p.is_active !== false;
+  document.getElementById('pl_del').style.display = 'inline-flex';
+  openModal('planModal');
+}
+
+async function savePlan() {
+  const id    = document.getElementById('pl_id').value;
+  const name  = document.getElementById('pl_name').value.trim();
+  const price = parseInt(document.getElementById('pl_price').value);
+  if (!name || !price) return mainAlert('Name and price required.', true);
+  const row = {
+    name,
+    tagline:        document.getElementById('pl_tag').value   || null,
+    days:           parseInt(document.getElementById('pl_days').value)  || 0,
+    price,
+    original_price: parseInt(document.getElementById('pl_orig').value)  || null,
+    sort_order:     parseInt(document.getElementById('pl_sort').value)  || 0,
+    is_active:      document.getElementById('pl_active').checked,
+  };
+  let err;
+  if (id) ({ error:err } = await db.from('pf_subscription_plans').update(row).eq('id', id));
+  else    ({ error:err } = await db.from('pf_subscription_plans').insert([row]));
+  closeModal('planModal');
+  if (err) mainAlert('Error: ' + err.message, true);
+  else { mainAlert(id ? 'Plan updated.' : 'Plan added.'); loadPlans(); }
+}
+
+async function deletePlan() {
+  const id = document.getElementById('pl_id').value;
+  if (!id || !confirm('Delete this plan?')) return;
+  await db.from('pf_subscription_plans').delete().eq('id', id);
+  closeModal('planModal');
+  mainAlert('Plan deleted.');
+  loadPlans();
+}
+
+async function togglePlan(id, val) {
+  await db.from('pf_subscription_plans').update({ is_active: val }).eq('id', id);
+}
+
+// ── SETTINGS ──────────────────────────────────────────────
+async function loadSettings() {
+  const { data } = await db.from('pf_settings').select('*').single();
+  if (!data) return;
+  document.getElementById('s_wa').value     = data.whatsapp_number        || '';
+  document.getElementById('s_torder').value = data.tally_order_url        || '';
+  document.getElementById('s_tsub').value   = data.tally_subscription_url || '';
+  document.getElementById('s_ann').value    = data.announcement           || '';
+}
+
+async function saveSettings() {
+  const { data:ex } = await db.from('pf_settings').select('id').single();
+  const row = {
+    whatsapp_number:        document.getElementById('s_wa').value,
+    tally_order_url:        document.getElementById('s_torder').value,
+    tally_subscription_url: document.getElementById('s_tsub').value,
+    announcement:           document.getElementById('s_ann').value || null,
+  };
+  let err;
+  if (ex) ({ error:err } = await db.from('pf_settings').update(row).eq('id', ex.id));
+  else    ({ error:err } = await db.from('pf_settings').insert([row]));
+  if (err) mainAlert('Error saving settings.', true);
+  else mainAlert('Settings saved.');
+}
+
+// ── UTILITIES ─────────────────────────────────────────────
+function openModal(id)  { document.getElementById(id).classList.add('on'); }
+function closeModal(id) { document.getElementById(id).classList.remove('on'); }
+
+function loginAlert(msg, err) {
+  const el = document.getElementById('loginMsg');
+  el.innerHTML = `<div class="alert ${err?'a-err':'a-ok'}" style="margin-bottom:12px">${msg}</div>`;
+}
+
+function mainAlert(msg, err) {
+  const el = document.getElementById('mainAlert');
+  el.innerHTML = `<div class="alert ${err?'a-err':'a-ok'}">${msg}</div>`;
+  setTimeout(() => { el.innerHTML = ''; }, 4000);
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function catEmoji(c) {
+  return { taco:'🌮', wrap:'🫓', khichdi:'🍲', drink:'🥛', food:'🌿' }[c] || '🌿';
+}
+
+// Close modal on background click
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('on'); });
+});
+
+// Enter key on password field
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.activeElement?.id === 'pass') doLogin();
+});
+</script>
+</body>
+</html>
+ENDOFFILE
+echo "✅ admin.html created"
+wc -l /mnt/user-data/outputs/admin.html
+Output
+
+✅ admin.html created
+826 /mnt/user-data/outputs/admin.html
