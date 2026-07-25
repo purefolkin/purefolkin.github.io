@@ -125,6 +125,65 @@ const db = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
 );
+
+  async function loadProducts() {
+  const menu = document.getElementById("pf-menu-list");
+
+  const { data: products, error } = await db
+    .from("pf_products")
+    .select("*")
+    .eq("is_available", true)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error("PUREFOLK product load failed:", error);
+    menu.innerHTML = "<p>Menu is temporarily unavailable.</p>";
+    return;
+  }
+
+  menu.innerHTML = products.map(product => `
+    <article class="pf-menu-card pf-observe">
+
+      <div class="pf-menu-image-wrap">
+        <div class="pf-menu-image">
+          <img
+            src="${product.image_path}"
+            alt="${product.image_alt || product.name}"
+          >
+        </div>
+      </div>
+
+      <div class="pf-menu-body">
+
+        <h3 class="pf-menu-name">${product.name}</h3>
+
+        <p class="pf-menu-desc">
+          ${product.description || ""}
+        </p>
+
+        <div class="pf-menu-footer">
+
+          <div class="pf-menu-price">
+            ${product.original_price
+              ? `<span style="text-decoration:line-through;opacity:0.6;">₹${product.original_price}</span>`
+              : ""
+            }
+            ₹${product.price}
+          </div>
+
+          <button
+            class="pf-btn-preorder"
+            data-item="${product.tally_param || product.name}">
+            Pre-Order
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+  `).join("");
+}
   
 // Smooth scroll
 document.getElementById("pf-scroll-menu").onclick = () => {
