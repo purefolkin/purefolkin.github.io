@@ -118,6 +118,14 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
 <script>
+  const SUPABASE_URL = "https://sckfdujwszairutiwmwu.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_wXxKpQ1tNTAtniSPWvahjw_gloGsXZ6";
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+  
 // Smooth scroll
 document.getElementById("pf-scroll-menu").onclick = () => {
   document.getElementById("pf-todays-menu").scrollIntoView({ behavior: "smooth" });
