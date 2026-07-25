@@ -183,6 +183,23 @@ const db = supabase.createClient(
 
     </article>
   `).join("");
+
+    
+
+    // Activate preorder buttons after products are rendered
+document.querySelectorAll(".pf-btn-preorder").forEach(btn => {
+  btn.onclick = () => {
+    const item = btn.dataset.item;
+    window.location.href =
+      `${TALLY_URL}?meal=${encodeURIComponent(item)}`;
+  };
+});
+
+// Observe dynamically created cards
+document.querySelectorAll(".pf-menu-card").forEach(card => {
+  observer.observe(card);
+});
+    
 }
   
 // Smooth scroll
@@ -198,12 +215,6 @@ document.getElementById("pf-whatsapp-hero").onclick = () => {
 // Preorder → WhatsApp + Tally
 const TALLY_URL = "https://tally.so/r/obbJBN";
 
-document.querySelectorAll(".pf-btn-preorder").forEach(btn => {
-  btn.onclick = () => {
-    const item = btn.dataset.item;
-    window.location.href = `${TALLY_URL}?meal=${encodeURIComponent(item)}`;
-  };
-});
 
 // Card reveal
 const observer = new IntersectionObserver(entries => {
@@ -217,7 +228,6 @@ const observer = new IntersectionObserver(entries => {
   threshold: 0.1
 });
 
-document.querySelectorAll(".pf-menu-card").forEach(card => observer.observe(card));
   
 loadProducts();
 </script>
