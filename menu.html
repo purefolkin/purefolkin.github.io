@@ -126,6 +126,24 @@ const db = supabase.createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 
+  let siteSettings = null;
+
+async function loadSettings() {
+  const { data, error } = await db
+    .from("pf_settings")
+    .select("whatsapp_number, tally_order_url, is_accepting_orders, announcement")
+    .single();
+
+  if (error) {
+    console.error("PUREFOLK settings load failed:", error);
+    return;
+  }
+
+  siteSettings = data;
+}
+
+  
+
   async function loadProducts() {
   const menu = document.getElementById("pf-menu-list");
 
