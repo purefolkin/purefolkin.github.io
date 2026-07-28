@@ -162,6 +162,22 @@ const db = supabase.createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 
+    let siteSettings = null;
+
+async function loadSettings() {
+    const { data, error } = await db
+        .from("pf_settings")
+        .select("tally_order_url, is_accepting_orders, announcement")
+        .single();
+
+    if (error) {
+        console.error("PUREFOLK settings load failed:", error);
+        return;
+    }
+
+    siteSettings = data;
+}
+
 async function loadHighProteinProducts() {
   const list = document.getElementById("pf-high-protein-list");
 
@@ -231,27 +247,35 @@ list.innerHTML = products.map(product => `
   `).join("");
 }
 
-const TALLY_URL = "https://tally.so/r/obbJBN";
-
 function activatePreorderButtons() {
-  document.querySelectorAll(".pf-btn-preorder").forEach(btn => {
-    btn.onclick = () => {
-      const item = btn.dataset.item;
+    document.querySelectorAll(".pf-btn-preorder").forEach(btn => {
 
-      window.location.href =
-        `${TALLY_URL}?meal=${encodeURIComponent(item)}`;
-    };
-  });
+        if (siteSettings?.is_accepting_orders === false) {
+            btn.textContent = "Coming Soon";
+            btn.disabled = true;
+            return;
+        }
+
+        btn.textContent = "Pre-Order";
+
+        btn.onclick = () => {
+            const item = btn.dataset.item;
+            const tallyUrl =
+                siteSettings?.tally_order_url || "https://tally.so/r/obbJBN";
+
+            window.location.href =
+                `${tallyUrl}?meal=${encodeURIComponent(item)}`;
+        };
+    });
 }
 
 async function init() {
-  await loadHighProteinProducts();
-  activatePreorderButtons();
+    await loadSettings();
+    await loadHighProteinProducts();
+    activatePreorderButtons();
 }
 
 init();
-
-
     
 </script>
     
