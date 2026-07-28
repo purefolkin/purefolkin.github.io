@@ -194,14 +194,7 @@ async function loadHighProteinProducts() {
     return;
   }
 
-  list.innerHTML = products.map(product => `
-    <div class="pf-card">
-      ${product.image_path ? `<img src="${product.image_path}" alt="${product.image_alt || product.name}">` : ""}
-      <h2>${product.name}</h2>
-      <p class="pf-desc">${product.description || ""}</p>
-      <p class="pf-price">₹${product.price}</p>
-    </div>
-
+ 
 list.innerHTML = products.map(product => `
   <article class="pf-menu-card">
 
