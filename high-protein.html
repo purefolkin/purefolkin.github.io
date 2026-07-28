@@ -185,11 +185,71 @@ async function loadHighProteinProducts() {
       <p class="pf-desc">${product.description || ""}</p>
       <p class="pf-price">₹${product.price}</p>
     </div>
+
+list.innerHTML = products.map(product => `
+  <article class="pf-menu-card">
+
+    <div class="pf-menu-image-wrap">
+      <div class="pf-menu-image">
+        <img
+          src="${product.image_path}"
+          alt="${product.image_alt || product.name}"
+        >
+      </div>
+    </div>
+
+    <div class="pf-menu-body">
+
+      <h3 class="pf-menu-name">${product.name}</h3>
+
+      <p class="pf-menu-desc">
+        ${product.description || ""}
+      </p>
+
+      <div class="pf-menu-footer">
+
+        <div class="pf-menu-price">
+          ${product.original_price
+            ? `<span style="text-decoration:line-through;opacity:0.6;">₹${product.original_price}</span>`
+            : ""
+          }
+          ₹${product.price}
+        </div>
+
+        <button
+          class="pf-btn-preorder"
+          data-item="${product.tally_param || product.name}">
+          Pre-Order
+        </button>
+
+      </div>
+
+    </div>
+
+  </article>
+    
   `).join("");
 }
 
-loadHighProteinProducts();
+const TALLY_URL = "https://tally.so/r/obbJBN";
 
+function activatePreorderButtons() {
+  document.querySelectorAll(".pf-btn-preorder").forEach(btn => {
+    btn.onclick = () => {
+      const item = btn.dataset.item;
+
+      window.location.href =
+        `${TALLY_URL}?meal=${encodeURIComponent(item)}`;
+    };
+  });
+}
+
+async function init() {
+  await loadHighProteinProducts();
+  activatePreorderButtons();
+}
+
+init();
 
 
     
