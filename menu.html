@@ -262,9 +262,12 @@ const observer = new IntersectionObserver(entries => {
   threshold: 0.1
 });
 
-  
-loadProducts();
-  loadSettings();
+  async function init() {
+  await loadSettings();
+  await loadProducts();
+}
+
+init();
 </script>
 
 </body>
