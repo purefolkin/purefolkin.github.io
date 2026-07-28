@@ -213,13 +213,21 @@ if (siteSettings.is_accepting_orders === false) {
     
 
     // Activate preorder buttons after products are rendered
-document.querySelectorAll(".pf-btn-preorder").forEach(btn => {
+
+    document.querySelectorAll(".pf-btn-preorder").forEach(btn => {
   btn.onclick = () => {
+
+    if (siteSettings.is_accepting_orders === false) {
+      alert("PUREFOLK is currently not accepting orders. Please check back later.");
+      return;
+    }
+
     const item = btn.dataset.item;
     window.location.href =
       `${TALLY_URL}?meal=${encodeURIComponent(item)}`;
   };
 });
+    
 
 // Observe dynamically created cards
 document.querySelectorAll(".pf-menu-card").forEach(card => {
