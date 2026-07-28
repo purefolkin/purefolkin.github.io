@@ -134,7 +134,10 @@
 
 <body>
 
-<div class="container">
+<div 
+    
+    
+    class="container">
 
     <h1 class="pf-title-center">High Protein Meals</h1>
     <p class="pf-sub">Purefolk’s clean, vegetarian protein options. </p>
@@ -148,5 +151,50 @@
     Mahesh Park · Nalasopara East
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://sckfdujwszairutiwmwu.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_wXxKpQ1tNTAtniSPWvahjw_gloGsXZ6";
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+async function loadHighProteinProducts() {
+  const list = document.getElementById("pf-high-protein-list");
+
+  const { data: products, error } = await db
+    .from("pf_products")
+    .select("*")
+    .eq("is_high_protein", true)
+    .eq("is_available", true)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error("High protein products load failed:", error);
+    list.innerHTML = "<p>Unable to load products right now.</p>";
+    return;
+  }
+
+  list.innerHTML = products.map(product => `
+    <div class="pf-card">
+      ${product.image_path ? `<img src="${product.image_path}" alt="${product.image_alt || product.name}">` : ""}
+      <h2>${product.name}</h2>
+      <p class="pf-desc">${product.description || ""}</p>
+      <p class="pf-price">₹${product.price}</p>
+    </div>
+  `).join("");
+}
+
+loadHighProteinProducts();
+
+
+
+    
+</script>
+    
+    
 </body>
 </html>
