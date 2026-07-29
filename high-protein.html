@@ -265,6 +265,11 @@ function activatePreorderButtons() {
 async function init() {
     await loadSettings();
     await loadHighProteinProducts();
+
+    document.querySelectorAll(".pf-menu-card").forEach(card => {
+        card.classList.add("pf-visible");
+    });
+
     activatePreorderButtons();
 }
 
