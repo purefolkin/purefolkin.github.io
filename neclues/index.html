@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Neclues | Purefolk Control</title>
+<style>
+:root{--forest:#263d32;--sage:#a8b5a2;--cream:#f6f3eb;--paper:#fffefa;--line:#e5e2d8;--muted:#778178;--ink:#202b24}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:14px/1.5 system-ui,sans-serif}
+.app{min-height:100vh;display:grid;grid-template-columns:230px 1fr}.side{background:var(--forest);color:white;padding:24px 14px}.brand{padding:0 10px 25px;letter-spacing:.18em;font-weight:800}.brand small{display:block;color:#cbd7c6;font-weight:400;letter-spacing:.06em}.group{font-size:10px;letter-spacing:.14em;color:#b8c6b4;margin:15px 10px 6px;text-transform:uppercase}
+nav{display:grid;gap:4px}nav button{border:0;background:transparent;color:#edf2e9;text-align:left;padding:10px;border-radius:8px;cursor:pointer}nav button:hover,nav button.active{background:#ffffff1c}
+.main{min-width:0}.top{height:64px;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 25px;color:var(--muted)}.env{font-size:10px;letter-spacing:.08em;font-weight:800;background:#fff0d1;color:#855d18;border-radius:6px;padding:7px}
+.content{max-width:1200px;margin:auto;padding:28px}.head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:22px}.eyebrow{font-size:10px;letter-spacing:.15em;color:var(--muted);font-weight:800;text-transform:uppercase}h1{color:var(--forest);font-size:28px;letter-spacing:-.04em;margin:5px 0}p{color:var(--muted);margin:0;max-width:700px}.notice{padding:13px 15px;border:1px solid #d4e4ed;background:#edf5f9;color:#31596b;border-radius:10px;margin-bottom:20px}.notice p{font-size:12px;color:inherit}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.stat,.panel,.tile{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px}.stat span{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:24px;color:var(--forest);margin:8px 0 3px}.stat small{color:var(--muted);font-size:11px}.cols{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}.panel h2{font-size:15px;color:var(--forest);margin:0 0 10px}.module{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.module:last-child{border:0}.ico{width:34px;height:34px;display:grid;place-items:center;background:#edf0e8;border-radius:9px}.module div:nth-child(2){flex:1}.module b{display:block;font-size:13px}.module small{color:var(--muted);font-size:11px}.tag{font-size:10px;color:#456447;background:#e8f1e7;border-radius:5px;padding:4px 6px}.flow{padding:12px 0;border-bottom:1px solid var(--line)}.flow b{font-size:12px}.flow p{font-size:11px;margin-top:3px}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.tile{text-align:left;cursor:pointer;color:inherit}.tile:hover{border-color:var(--sage)}.tile b{display:block;color:var(--forest);margin:9px 0 4px}.tile p{font-size:11px}.hidden{display:none!important}.back{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:9px 12px;cursor:pointer;color:var(--forest)}
+footer{border-top:1px solid var(--line);padding:18px 28px;color:var(--muted);font-size:11px}
+@media(max-width:850px){.app{grid-template-columns:1fr}.side{padding:14px}.brand{padding:0 6px 12px}nav{display:flex;overflow:auto}.group{display:none}nav button{white-space:nowrap}.stats{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}.content{padding:18px 14px}.tiles{grid-template-columns:repeat(2,1fr)}.top{padding:0 14px}}
+@media(max-width:420px){.tiles{grid-template-columns:1fr}.head{display:block}.head button{margin-top:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+<div class="brand">PUREFOLK<small>NECLUES · CONTROL</small></div>
+<div class="group">Workspace</div><nav aria-label="Workspace"><button class="active" data-page="overview">⌂ Overview</button><button data-page="modules">▦ System modules</button></nav>
+<div class="group">Business data</div><nav aria-label="Business data"><button data-page="products">◈ Product catalog</button><button data-page="variants">▤ Sellable variants</button><button data-page="recipes">♨ Recipes & ingredients</button><button data-page="suppliers">⇄ Suppliers & sourcing</button><button data-page="pricing">₹ Costs & pricing</button></nav>
+<div class="group">Operations</div><nav aria-label="Operations"><button data-page="orders">▣ Orders</button><button data-page="kitchen">♧ Kitchen operations</button><button data-page="delivery">⌁ Delivery</button><button data-page="feedback">♡ Customer feedback</button><button data-page="analytics">▥ Analytics</button><button data-page="settings">⚙ System settings</button></nav>
+</aside>
+<main class="main">
+<header class="top"><span>Purefolk / <b id="crumb">Overview</b></span><span class="env">DEVELOPMENT · NOT LIVE</span></header>
+<div class="content">
+<section id="overview">
+<div class="head"><div><div class="eyebrow">Control plane · foundation</div><h1>Neclues overview</h1><p>A shared control surface for Purefolk business data. Manage records here, validate them centrally, and publish only approved data to customer-facing experiences.</p></div><button class="back" data-page="modules">Explore modules →</button></div>
+<div class="notice"><b>Development shell only.</b><p>Figures are intentionally blank. No live database, customer data, authentication, or publishing actions are connected in this first scaffold.</p></div>
+<div class="stats"><article class="stat"><span>Product records</span><strong>—</strong><small>Data connection pending</small></article><article class="stat"><span>Sellable variants</span><strong>—</strong><small>Distinct from product identity</small></article><article class="stat"><span>Orders in workflow</span><strong>—</strong><small>No order feed connected</small></article><article class="stat"><span>Website publishing</span><strong>Paused</strong><small>Publishing is not enabled</small></article></div>
+<div class="cols"><section class="panel"><h2>Core modules</h2><div id="overviewList"></div></section><section class="panel"><h2>Target data flow</h2><div class="flow"><b>01 · Manage in Neclues</b><p>Create and maintain records with clear ownership and validation.</p></div><div class="flow"><b>02 · Validate shared data</b><p>Keep stable IDs, lifecycle, sellability, availability and publishability distinct.</p></div><div class="flow"><b>03 · Publish approved data</b><p>Only eligible records reach the website and ordering flow.</p></div><div class="flow"><b>04 · Learn from operations</b><p>Orders, kitchen outcomes, delivery and reviews feed back into the system.</p></div></section></div>
+</section>
+<section id="modules" class="hidden"><div class="head"><div><div class="eyebrow">Workspace</div><h1>System modules</h1><p>Navigation boundaries for the connected Purefolk system. Each module must follow the approved architecture and data contracts.</p></div></div><div class="tiles" id="tiles"></div></section>
+<section id="detail" class="hidden"><div class="head"><div><div class="eyebrow" id="detailGroup">Business module</div><h1 id="detailName">Module</h1><p id="detailDesc"></p></div><button class="back" data-page="modules">← All modules</button></div><div class="panel"><h2>Implementation boundary</h2><p id="detailBody">This module is represented in the interface only. Connect the approved fields, lifecycle rules, permissions and source-of-truth tables before enabling live operations.</p><div id="detailTags" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:16px"></div></div></section>
+</div>
+<footer>PUREFOLK · NECLUES · Development foundation · No production writes</footer>
+</main>
+</div>
+<script>
+const modules=[
+{id:"products",name:"Product catalog",group:"Business data",icon:"◈",desc:"Permanent product identity, classification, descriptions and lifecycle.",tags:["Product ID","Classification","Lifecycle","Publishability"]},
+{id:"variants",name:"Sellable variants",group:"Business data",icon:"▤",desc:"Sellable configurations, options and SKU-level distinctions.",tags:["Variant ID","SKU","Options","Sellability"]},
+{id:"recipes",name:"Recipes & ingredients",group:"Business data",icon:"♨",desc:"Recipe composition, ingredients, preparation rules and yield.",tags:["Recipe versions","Ingredients","Allergens","Yield"]},
+{id:"suppliers",name:"Suppliers & sourcing",group:"Business data",icon:"⇄",desc:"Supplier records, ingredient sourcing and approval status.",tags:["Supplier","Source","Approval","Traceability"]},
+{id:"pricing",name:"Costs & pricing",group:"Business data",icon:"₹",desc:"Ingredient and recipe costs, packaging, selling prices and margins.",tags:["Cost inputs","Price","Margin","History"]},
+{id:"orders",name:"Orders",group:"Operations",icon:"▣",desc:"Order intake, validation, status transitions and selected sellable items.",tags:["Order ID","Line items","Status","Payment"]},
+{id:"kitchen",name:"Kitchen operations",group:"Operations",icon:"♧",desc:"Preparation queue, recipe execution, quality checks and hand-off.",tags:["Prep queue","Quality","Completion","Exceptions"]},
+{id:"delivery",name:"Delivery",group:"Operations",icon:"⌁",desc:"Delivery-area eligibility, rules, dispatch and fulfilment outcomes.",tags:["Area","Rules","Dispatch","Proof"]},
+{id:"feedback",name:"Customer feedback",group:"Operations",icon:"♡",desc:"Customer reviews and issue signals linked to relevant experiences.",tags:["Review","Sentiment","Order link","Follow-up"]},
+{id:"analytics",name:"Analytics",group:"Operations",icon:"▥",desc:"Operational and customer metrics derived from source records.",tags:["Metrics","Trends","Exceptions","Data quality"]},
+{id:"settings",name:"System settings",group:"Governance",icon:"⚙",desc:"Access policy, integrations, audit trail and publication safeguards.",tags:["Permissions","Integrations","Audit","Publishing"]}
+];
+const el=id=>document.getElementById(id);
+function row(m){return '<div class="module"><div class="ico">'+m.icon+'</div><div><b>'+m.name+'</b><small>'+m.desc+'</small></div><span class="tag">Shell</span></div>'}
+function tile(m){return '<button class="tile" data-module="'+m.id+'"><span class="ico">'+m.icon+'</span><b>'+m.name+'</b><p>'+m.desc+'</p></button>'}
+el("overviewList").innerHTML=modules.slice(0,5).map(row).join("");
+el("tiles").innerHTML=modules.map(tile).join("");
+function page(id){document.querySelectorAll(".content>section").forEach(s=>s.classList.add("hidden"));document.querySelectorAll("nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===id));const m=modules.find(x=>x.id===id);if(id==="overview"||id==="modules"){el(id).classList.remove("hidden");el("crumb").textContent=id==="overview"?"Overview":"System modules";}else if(m){el("detail").classList.remove("hidden");el("crumb").textContent=m.name;el("detailName").textContent=m.name;el("detailGroup").textContent=m.group;el("detailDesc").textContent=m.desc;el("detailTags").innerHTML=m.tags.map(t=>'<span class="tag">'+t+'</span>').join("");}}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-page]");if(b){page(b.dataset.page);return;}const t=e.target.closest("[data-module]");if(t)page(t.dataset.module);});
+</script>
+</body>
+</html>
