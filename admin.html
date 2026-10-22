@@ -1,7 +1,3 @@
-
-cat > /mnt/user-data/outputs/admin.html << 'ENDOFFILE'
-
-  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -461,7 +457,13 @@ async function loadProducts() {
   el.innerHTML = '<div class="state">Loading…</div>';
   const { data, error } = await db
     .from('pf_products').select('*').order('sort_order');
-  if (error) { el.innerHTML = `<div class="state">Error: ${error.message}</div>`; return; }
+  if (error) {
+    const state = document.createElement('div');
+    state.className = 'state';
+    state.textContent = 'Unable to load products. Please try again.';
+    el.replaceChildren(state);
+    return;
+  }
   if (!data?.length) {
     el.innerHTML = `<div class="state">No products yet.<br><br>
       <button class="btn btn-p btn-sm" onclick="openAdd()">Add first product</button></div>`;
@@ -797,13 +799,20 @@ function closeModal(id) { document.getElementById(id).classList.remove('on'); }
 
 function loginAlert(msg, err) {
   const el = document.getElementById('loginMsg');
-  el.innerHTML = `<div class="alert ${err?'a-err':'a-ok'}" style="margin-bottom:12px">${msg}</div>`;
+  const alert = document.createElement('div');
+  alert.className = 'alert ' + (err ? 'a-err' : 'a-ok');
+  alert.style.marginBottom = '12px';
+  alert.textContent = String(msg ?? '');
+  el.replaceChildren(alert);
 }
 
 function mainAlert(msg, err) {
   const el = document.getElementById('mainAlert');
-  el.innerHTML = `<div class="alert ${err?'a-err':'a-ok'}">${msg}</div>`;
-  setTimeout(() => { el.innerHTML = ''; }, 4000);
+  const alert = document.createElement('div');
+  alert.className = 'alert ' + (err ? 'a-err' : 'a-ok');
+  alert.textContent = String(msg ?? '');
+  el.replaceChildren(alert);
+  setTimeout(() => { el.replaceChildren(); }, 4000);
 }
 
 function esc(s) {
@@ -828,12 +837,3 @@ document.addEventListener('keydown', e => {
 </script>
 </body>
 </html>
-
-  
-ENDOFFILE
-echo "✅ admin.html created"
-wc -l /mnt/user-data/outputs/admin.html
-Output
-
-✅ admin.html created
-826 /mnt/user-data/outputs/admin.html
