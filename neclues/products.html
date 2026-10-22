@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Neclues · Product Management</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+<style>
+:root{--forest:#263d32;--sage:#a8b5a2;--cream:#f6f3eb;--paper:#fffefa;--line:#e5e2d8;--muted:#778178;--ink:#202b24;--red:#a83e36}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:14px/1.5 system-ui,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}.shell{max-width:1180px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{font-weight:800;letter-spacing:.12em;color:var(--forest)}.brand small{display:block;letter-spacing:.04em;font-weight:500;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);border-radius:8px;padding:9px 13px;background:var(--paper);color:var(--forest)}.primary{background:var(--forest);color:white;border-color:var(--forest)}.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}.heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}h1{margin:0;color:var(--forest);font-size:28px}h2{margin:0 0 14px;font-size:17px;color:var(--forest)}p,.muted{color:var(--muted)}.notice{background:#edf5f9;border:1px solid #d4e4ed;color:#31596b;border-radius:9px;padding:12px;margin-bottom:16px}.notice p{margin:4px 0 0;color:inherit}.hidden{display:none!important}.login{max-width:400px;margin:8vh auto}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:grid;gap:5px}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field textarea,.field select{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:white;color:var(--ink)}textarea{min-height:95px;resize:vertical}.checks{display:flex;gap:16px;flex-wrap:wrap}.checks label{display:flex;align-items:center;gap:7px}.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:12px}.toolbar input{flex:1;min-width:140px;padding:10px;border:1px solid var(--line);border-radius:8px}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:680px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}td small{display:block;color:var(--muted)}.pill{display:inline-block;padding:3px 7px;border-radius:5px;background:#e8f1e7;color:#456447;font-size:11px}.pill.off{background:#f8e8e5;color:var(--red)}.status{min-height:20px;color:var(--muted);font-size:13px}.error{color:var(--red)}.rowactions{display:flex;gap:6px}.rowactions button{padding:6px 9px}.foot{font-size:12px;color:var(--muted);padding:8px 2px}@media(max-width:650px){.shell{padding:13px}.grid{grid-template-columns:1fr}.heading{display:block}.heading .actions{margin-top:12px}.panel{padding:15px}h1{font-size:24px}.top{align-items:flex-start}}
+</style>
+</head>
+<body>
+<div id="login" class="shell login">
+ <div class="panel">
+  <div class="brand">PUREFOLK <small>NECLUES · CONTROL</small></div>
+  <h1 style="margin-top:22px">Sign in</h1>
+  <p>Authorized team members only.</p>
+  <form id="loginForm">
+   <div class="field" style="margin:16px 0"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required></div>
+   <div class="field" style="margin:16px 0"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
+   <button class="btn primary" type="submit">Sign in to Neclues</button>
+   <div id="loginStatus" class="status" role="status" style="margin-top:10px"></div>
+  </form>
+ </div>
+</div>
+<div id="app" class="shell hidden">
+ <header class="top"><div class="brand">PUREFOLK <small>NECLUES · PRODUCT MANAGEMENT</small></div><div class="actions"><a class="btn" href="index.html" style="text-decoration:none">← Control home</a><button id="logout" class="btn">Sign out</button></div></header>
+ <div class="notice"><strong>Product workspace</strong><p>Connected to the existing <code>pf_products</code> table. This first implementation edits only fields that already exist in the production schema; it does not create new tables or change the live website's publishing rules.</p></div>
+ <section class="panel">
+  <div class="heading"><div><h1>Product catalogue</h1><p>Manage product details, menu properties and availability.</p></div><div class="actions"><button id="newProduct" class="btn primary">＋ Add product</button></div></div>
+  <div class="toolbar"><input id="search" type="search" placeholder="Search product name or category"><button id="refresh" class="btn">Refresh</button></div>
+  <div id="listStatus" class="status" role="status">Loading products…</div>
+  <div class="tablewrap"><table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Properties</th><th>Availability</th><th>Actions</th></tr></thead><tbody id="products"></tbody></table></div>
+ </section>
+ <section id="editor" class="panel hidden">
+  <div class="heading"><div><h2 id="formTitle">Add product</h2><p>Required fields are marked with *.</p></div><button id="cancel" class="btn">Cancel</button></div>
+  <form id="productForm">
+   <input type="hidden" id="id">
+   <div class="grid">
+    <div class="field"><label for="name">Product name *</label><input id="name" required maxlength="180" placeholder="Pure Protein Taco"></div>
+    <div class="field"><label for="category">Product type *</label><select id="category"><option value="food">Food</option><option value="drink">Drink</option><option value="special">Special</option></select></div>
+    <div class="field"><label for="price">Selling price (₹) *</label><input id="price" type="number" min="0" step="1" required></div>
+    <div class="field"><label for="original_price">Original price (₹)</label><input id="original_price" type="number" min="0" step="1"></div>
+    <div class="field"><label for="image_path">Image path</label><input id="image_path" placeholder="images/menu-taco.webp"></div>
+    <div class="field"><label for="image_alt">Image alt text</label><input id="image_alt" maxlength="250" placeholder="Pure Protein Taco by Purefolk"></div>
+    <div class="field"><label for="tally_param">Order-form product name</label><input id="tally_param" placeholder="Pure Protein Taco"></div>
+    <div class="field"><label for="sort_order">Menu sort order</label><input id="sort_order" type="number" step="1" value="0"></div>
+   </div>
+   <div class="field" style="margin-top:14px"><label for="description">Description</label><textarea id="description" maxlength="5000" placeholder="Describe the product and its ingredients."></textarea></div>
+   <div class="field" style="margin-top:14px"><label>Product properties</label><div class="checks"><label><input id="is_jain" type="checkbox"> Jain-friendly</label><label><input id="is_satvik" type="checkbox"> Satvik</label><label><input id="is_high_protein" type="checkbox"> High protein</label><label><input id="is_available" type="checkbox"> Available to order</label></div></div>
+   <div class="actions" style="margin-top:18px"><button class="btn primary" type="submit" id="save">Save product</button><button class="btn" type="button" id="cancel2">Cancel</button></div>
+   <div id="formStatus" class="status" role="status" style="margin-top:10px"></div>
+  </form>
+ </section>
+ <div class="foot">Neclues development workspace · Product records are stored in Supabase. Product ID is system-generated and remains unchanged when the name is edited.</div>
+</div>
+<script>
+(() => {
+ const SUPA_URL='https://sckfdujwszairutiwmwu.supabase.co';
+ const SUPA_KEY='sb_publishable_wXxKpQ1tNTAtniSPWvahjw_gloGsXZ6';
+ const $=id=>document.getElementById(id);
+ const db=window.supabase.createClient(SUPA_URL,SUPA_KEY);
+ let records=[];
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function status(id,msg,error=false){$(id).textContent=msg;$(id).classList.toggle('error',error)}
+ async function init(){const {data,error}=await db.auth.getSession();if(error){status('loginStatus','Unable to verify session. Reload and try again.',true);return}if(data.session)showApp();else $('login').classList.remove('hidden')}
+ function showApp(){$('login').classList.add('hidden');$('app').classList.remove('hidden');loadProducts()}
+ async function loadProducts(){status('listStatus','Loading products…');$('products').replaceChildren();const {data,error}=await db.from('pf_products').select('id,name,description,category,price,original_price,image_path,image_alt,tally_param,is_available,is_jain,is_satvik,is_high_protein,sort_order,created_at').order('sort_order').order('name');if(error){status('listStatus','Could not load products. Check table permissions and your account session, then retry.',true);return}records=data||[];render()}
+ function render(){const q=$('search').value.trim().toLowerCase();const rows=records.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q));$('products').replaceChildren();for(const p of rows){const tr=document.createElement('tr');tr.innerHTML='<td><strong>'+esc(p.name)+'</strong><small>'+esc(p.id)+'</small></td><td>'+esc(p.category)+'</td><td>₹'+esc(p.price)+'</td><td>'+ (p.is_jain?'<span class="pill">Jain</span> ':'')+(p.is_satvik?'<span class="pill">Satvik</span> ':'')+(p.is_high_protein?'<span class="pill">High protein</span>':'')+'</td><td>'+(p.is_available?'<span class="pill">Available</span>':'<span class="pill off">Unavailable</span>')+'</td><td><div class="rowactions"><button class="btn" data-edit="'+esc(p.id)+'">Edit</button><button class="btn" data-toggle="'+esc(p.id)+'">'+(p.is_available?'Mark unavailable':'Make available')+'</button></div></td>';tr.querySelector('[data-edit]').addEventListener('click',()=>openEditor(p.id));tr.querySelector('[data-toggle]').addEventListener('click',()=>toggleAvailability(p));$('products').appendChild(tr)}status('listStatus',rows.length+' product'+(rows.length===1?'':'s')+(q?' found':'')+'.')}
+ function openEditor(id){const p=records.find(x=>x.id===id);$('productForm').reset();$('id').value=p?.id||'';$('formTitle').textContent=p?'Edit product':'Add product';for(const key of ['name','category','price','original_price','image_path','image_alt','tally_param','sort_order','description'])$(key).value=p?.[key]??(key==='category'?'food':key==='sort_order'?'0':'');for(const key of ['is_jain','is_satvik','is_high_protein','is_available'])$(key).checked=!!p?.[key];$('editor').classList.remove('hidden');status('formStatus','');$('editor').scrollIntoView({behavior:'smooth',block:'start'})}
+ async function saveProduct(e){e.preventDefault();const id=$('id').value;const name=$('name').value.trim();const price=Number($('price').value);const original=$('original_price').value===''?null:Number($('original_price').value);if(!name||!Number.isInteger(price)||price<0){status('formStatus','Enter a product name and a whole-number price of zero or more.',true);return}if(original!==null&&(!Number.isInteger(original)||original<0)){status('formStatus','Original price must be a whole number of zero or more.',true);return}const payload={name,category:$('category').value,price,original_price:original,description:$('description').value.trim()||null,image_path:$('image_path').value.trim()||null,image_alt:$('image_alt').value.trim()||null,tally_param:$('tally_param').value.trim()||null,sort_order:Number.parseInt($('sort_order').value||'0',10)||0,is_jain:$('is_jain').checked,is_satvik:$('is_satvik').checked,is_high_protein:$('is_high_protein').checked,is_available:$('is_available').checked};$('save').disabled=true;status('formStatus','Saving…');let result;if(id)result=await db.from('pf_products').update(payload).eq('id',id);else result=await db.from('pf_products').insert(payload);$('save').disabled=false;if(result.error){status('formStatus','Save failed. No changes were confirmed: '+result.error.message,true);return}status('formStatus','Product saved.');$('editor').classList.add('hidden');await loadProducts()}
+ async function toggleAvailability(p){const {error}=await db.from('pf_products').update({is_available:!p.is_available}).eq('id',p.id);if(error){status('listStatus','Availability update failed: '+error.message,true);return}await loadProducts()}
+ $('loginForm').addEventListener('submit',async e=>{e.preventDefault();status('loginStatus','Signing in…');const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){status('loginStatus','Sign-in failed. Check your credentials and account access.',true);return}showApp()});
+ $('logout').addEventListener('click',async()=>{await db.auth.signOut();$('app').classList.add('hidden');$('login').classList.remove('hidden')});
+ $('newProduct').addEventListener('click',()=>openEditor());$('cancel').addEventListener('click',()=>$('editor').classList.add('hidden'));$('cancel2').addEventListener('click',()=>$('editor').classList.add('hidden'));$('refresh').addEventListener('click',loadProducts);$('search').addEventListener('input',render);$('productForm').addEventListener('submit',saveProduct);
+ db.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'){$('app').classList.add('hidden');$('login').classList.remove('hidden')}});
+ init();
+})();
+</script>
+</body>
+</html>
