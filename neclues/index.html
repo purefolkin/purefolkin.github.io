@@ -61,7 +61,7 @@ function tile(m){return '<button class="tile" data-module="'+m.id+'"><span class
 el("overviewList").innerHTML=modules.slice(0,5).map(row).join("");
 el("tiles").innerHTML=modules.map(tile).join("");
 function page(id){document.querySelectorAll(".content>section").forEach(s=>s.classList.add("hidden"));document.querySelectorAll("nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===id));const m=modules.find(x=>x.id===id);if(id==="overview"||id==="modules"){el(id).classList.remove("hidden");el("crumb").textContent=id==="overview"?"Overview":"System modules";}else if(m){el("detail").classList.remove("hidden");el("crumb").textContent=m.name;el("detailName").textContent=m.name;el("detailGroup").textContent=m.group;el("detailDesc").textContent=m.desc;el("detailTags").innerHTML=m.tags.map(t=>'<span class="tag">'+t+'</span>').join("");}}
-document.addEventListener("click",e=>{const b=e.target.closest("[data-page]");if(b){page(b.dataset.page);return;}const t=e.target.closest("[data-module]");if(t)page(t.dataset.module);});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-page]");if(b){if(b.dataset.page==="products"){window.location.href="products.html";return;}page(b.dataset.page);return;}const t=e.target.closest("[data-module]");if(t){if(t.dataset.module==="products"){window.location.href="products.html";return;}page(t.dataset.module);}});
 </script>
 </body>
 </html>
