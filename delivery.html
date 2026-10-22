@@ -590,18 +590,25 @@ function calcMealPrice(mealValue) {
 
       summaryIdEl.textContent = `Confirmation ID: ${orderId}`;
 
-      summaryLinesEl.innerHTML = `
-        <p class="pf-summary-line"><strong>Name:</strong> ${name}</p>
-        <p class="pf-summary-line"><strong>Area:</strong> ${area} (approx ${km.toFixed(1)} KM from Mahesh Park)</p>
-        <p class="pf-summary-line"><strong>Meal:</strong> ${meal} × ${qty}</p>
-        <p class="pf-summary-line"><strong>Jain Option:</strong> ${jain}</p>
-        <p class="pf-summary-line"><strong>Meal Total:</strong> ₹${mealTotal}</p>
-        <p class="pf-summary-line"><strong>Delivery Charge:</strong> ₹${deliveryCharge} ${deliveryCharge === 0 ? "(within 5 KM – free)" : "(beyond 5 KM)"} </p>
-        <p class="pf-summary-line"><strong>Approx Total:</strong> ₹${grandTotal}</p>
-        <p class="pf-summary-line"><strong>Preferred Slot:</strong> ${slot}</p>
-        <p class="pf-summary-line"><strong>Payment:</strong> ${pay}</p>
-        <p class="pf-summary-line"><strong>Address:</strong> ${address}</p>
-      `;
+      summaryLinesEl.replaceChildren();
+      const addSummaryLine = (label, value) => {
+        const line = document.createElement("p");
+        line.className = "pf-summary-line";
+        const labelEl = document.createElement("strong");
+        labelEl.textContent = label;
+        line.append(labelEl, document.createTextNode(" " + String(value ?? "")));
+        summaryLinesEl.appendChild(line);
+      };
+      addSummaryLine("Name:", name);
+      addSummaryLine("Area:", `${area} (approx ${km.toFixed(1)} KM from Mahesh Park)`);
+      addSummaryLine("Meal:", `${meal} × ${qty}`);
+      addSummaryLine("Jain Option:", jain);
+      addSummaryLine("Meal Total:", `₹${mealTotal}`);
+      addSummaryLine("Delivery Charge:", `₹${deliveryCharge} ${deliveryCharge === 0 ? "(within 5 KM – free)" : "(beyond 5 KM)"}`);
+      addSummaryLine("Approx Total:", `₹${grandTotal}`);
+      addSummaryLine("Preferred Slot:", slot);
+      addSummaryLine("Payment:", pay);
+      addSummaryLine("Address:", address);
 
       summaryBox.style.display = "block";
       summaryBox.scrollIntoView({ behavior: "smooth", block: "center" });
