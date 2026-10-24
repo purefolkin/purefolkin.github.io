@@ -4,64 +4,112 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Neclues | Purefolk Control</title>
+<title>Neclues | Purefolk UAT Dashboard</title>
 <style>
-:root{--forest:#263d32;--sage:#a8b5a2;--cream:#f6f3eb;--paper:#fffefa;--line:#e5e2d8;--muted:#778178;--ink:#202b24}
-*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:14px/1.5 system-ui,sans-serif}
-.app{min-height:100vh;display:grid;grid-template-columns:230px 1fr}.side{background:var(--forest);color:white;padding:24px 14px}.brand{padding:0 10px 25px;letter-spacing:.18em;font-weight:800}.brand small{display:block;color:#cbd7c6;font-weight:400;letter-spacing:.06em}.group{font-size:10px;letter-spacing:.14em;color:#b8c6b4;margin:15px 10px 6px;text-transform:uppercase}
-nav{display:grid;gap:4px}nav button{border:0;background:transparent;color:#edf2e9;text-align:left;padding:10px;border-radius:8px;cursor:pointer}nav button:hover,nav button.active{background:#ffffff1c}
-.main{min-width:0}.top{height:64px;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 25px;color:var(--muted)}.env{font-size:10px;letter-spacing:.08em;font-weight:800;background:#fff0d1;color:#855d18;border-radius:6px;padding:7px}
-.content{max-width:1200px;margin:auto;padding:28px}.head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:22px}.eyebrow{font-size:10px;letter-spacing:.15em;color:var(--muted);font-weight:800;text-transform:uppercase}h1{color:var(--forest);font-size:28px;letter-spacing:-.04em;margin:5px 0}p{color:var(--muted);margin:0;max-width:700px}.notice{padding:13px 15px;border:1px solid #d4e4ed;background:#edf5f9;color:#31596b;border-radius:10px;margin-bottom:20px}.notice p{font-size:12px;color:inherit}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.stat,.panel,.tile{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px}.stat span{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:24px;color:var(--forest);margin:8px 0 3px}.stat small{color:var(--muted);font-size:11px}.cols{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}.panel h2{font-size:15px;color:var(--forest);margin:0 0 10px}.module{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.module:last-child{border:0}.ico{width:34px;height:34px;display:grid;place-items:center;background:#edf0e8;border-radius:9px}.module div:nth-child(2){flex:1}.module b{display:block;font-size:13px}.module small{color:var(--muted);font-size:11px}.tag{font-size:10px;color:#456447;background:#e8f1e7;border-radius:5px;padding:4px 6px}.flow{padding:12px 0;border-bottom:1px solid var(--line)}.flow b{font-size:12px}.flow p{font-size:11px;margin-top:3px}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.tile{text-align:left;cursor:pointer;color:inherit}.tile:hover{border-color:var(--sage)}.tile b{display:block;color:var(--forest);margin:9px 0 4px}.tile p{font-size:11px}.hidden{display:none!important}.back{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:9px 12px;cursor:pointer;color:var(--forest)}
-footer{border-top:1px solid var(--line);padding:18px 28px;color:var(--muted);font-size:11px}
-@media(max-width:850px){.app{grid-template-columns:1fr}.side{padding:14px}.brand{padding:0 6px 12px}nav{display:flex;overflow:auto}.group{display:none}nav button{white-space:nowrap}.stats{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}.content{padding:18px 14px}.tiles{grid-template-columns:repeat(2,1fr)}.top{padding:0 14px}}
-@media(max-width:420px){.tiles{grid-template-columns:1fr}.head{display:block}.head button{margin-top:12px}}
+:root{--forest:#263d32;--sage:#a8b5a2;--cream:#f6f3eb;--paper:#fffefa;--line:#e5e2d8;--muted:#778178;--ink:#202b24;--blue:#31596b;--amber:#855d18;--red:#a83e36}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:14px/1.5 system-ui,sans-serif}button,select{font:inherit}.app{min-height:100vh;display:grid;grid-template-columns:230px 1fr}.side{background:var(--forest);color:white;padding:24px 14px}.brand{padding:0 10px 25px;letter-spacing:.18em;font-weight:800}.brand small{display:block;color:#cbd7c6;font-weight:400;letter-spacing:.06em}.group{font-size:10px;letter-spacing:.14em;color:#b8c6b4;margin:15px 10px 6px;text-transform:uppercase}nav{display:grid;gap:4px}nav button{border:0;background:transparent;color:#edf2e9;text-align:left;padding:10px;border-radius:8px;cursor:pointer}nav button:hover,nav button.active{background:#ffffff1c}.main{min-width:0}.top{min-height:64px;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 25px;color:var(--muted)}.env{font-size:10px;letter-spacing:.08em;font-weight:800;background:#fff0d1;color:var(--amber);border-radius:6px;padding:7px;white-space:nowrap}.content{max-width:1300px;margin:auto;padding:28px}.head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:20px}.eyebrow{font-size:10px;letter-spacing:.15em;color:var(--muted);font-weight:800;text-transform:uppercase}h1{color:var(--forest);font-size:28px;letter-spacing:-.04em;margin:5px 0}h2{font-size:15px;color:var(--forest);margin:0 0 12px}p{color:var(--muted);margin:0;max-width:760px}.notice{padding:13px 15px;border:1px solid #d4e4ed;background:#edf5f9;color:var(--blue);border-radius:10px;margin-bottom:18px}.notice p{font-size:12px;color:inherit;margin-top:3px}.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.toolbar select,.btn{border:1px solid var(--line);background:var(--paper);color:var(--forest);border-radius:8px;padding:9px 12px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.stat,.panel,.tile{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px}.stat span{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:26px;color:var(--forest);margin:7px 0 2px}.stat small{font-size:11px;color:var(--muted)}.positive{color:#456447!important}.caution{color:var(--amber)!important}.cols{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;margin-bottom:18px}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}.pill{display:inline-block;padding:3px 7px;border-radius:5px;background:#e8f1e7;color:#456447;font-size:10px;white-space:nowrap}.pill.pending{background:#fff0d1;color:var(--amber)}.pill.alert{background:#f8e8e5;color:var(--red)}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:480px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}th{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}td{font-size:12px}td small{display:block;color:var(--muted);font-size:10px}.empty{padding:18px;color:var(--muted);text-align:center}.task{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.task-icon{width:32px;height:32px;display:grid;place-items:center;background:#edf0e8;border-radius:8px;flex-shrink:0}.task b{display:block;font-size:12px}.task small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.task .pill{margin-left:auto}.bottom-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.tile{color:inherit;text-align:left;cursor:pointer}.tile:hover{border-color:var(--sage)}.tile .icon{font-size:20px}.tile b{display:block;color:var(--forest);margin:8px 0 3px}.tile p{font-size:11px}.hidden{display:none!important}footer{border-top:1px solid var(--line);padding:18px 28px;color:var(--muted);font-size:11px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{padding:14px}.brand{padding:0 6px 12px}nav{display:flex;overflow:auto}nav button{white-space:nowrap}.group{display:none}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}.bottom-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:18px 14px}.top{padding:12px 14px}}
+@media(max-width:480px){.head{display:block}.toolbar{margin-top:12px}.bottom-grid{grid-template-columns:1fr}.env{font-size:9px}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="side">
 <div class="brand">PUREFOLK<small>NECLUES · CONTROL</small></div>
-<div class="group">Workspace</div><nav aria-label="Workspace"><button class="active" data-page="overview">⌂ Overview</button><button data-page="modules">▦ System modules</button></nav>
-<div class="group">Business data</div><nav aria-label="Business data"><button data-page="products">◈ Product catalog</button><button data-page="variants">▤ Sellable variants</button><button data-page="recipes">♨ Recipes & ingredients</button><button data-page="suppliers">⇄ Suppliers & sourcing</button><button data-page="pricing">₹ Costs & pricing</button></nav>
-<div class="group">Operations</div><nav aria-label="Operations"><button data-page="orders">▣ Orders</button><button data-page="kitchen">♧ Kitchen operations</button><button data-page="delivery">⌁ Delivery</button><button data-page="feedback">♡ Customer feedback</button><button data-page="analytics">▥ Analytics</button><button data-page="settings">⚙ System settings</button></nav>
+<div class="group">Phase 1</div>
+<nav aria-label="Main navigation">
+<button class="active" data-page="dashboard">▦ Dashboard</button>
+<button data-page="products">◈ Product</button>
+<button data-page="recipes">♨ Recipe</button>
+<button data-page="seo">⌕ SEO Panel</button>
+<button data-page="banners">▧ Banners</button>
+<button data-page="orders">▣ Orders & Payments</button>
+<button data-page="pnl">₹ Profit & Loss</button>
+<button data-page="delivery">⌁ Delivery</button>
+</nav>
 </aside>
 <main class="main">
-<header class="top"><span>Purefolk / <b id="crumb">Overview</b></span><span class="env">DEVELOPMENT · NOT LIVE</span></header>
+<header class="top"><span>Purefolk / <b id="crumb">Dashboard</b></span><span class="env">UAT · MOCK DATA · NOT LIVE</span></header>
 <div class="content">
-<section id="overview">
-<div class="head"><div><div class="eyebrow">Control plane · foundation</div><h1>Neclues overview</h1><p>A shared control surface for Purefolk business data. Manage records here, validate them centrally, and publish only approved data to customer-facing experiences.</p></div><button class="back" data-page="modules">Explore modules →</button></div>
-<div class="notice"><b>Development shell only.</b><p>Figures are intentionally blank. No live database, customer data, authentication, or publishing actions are connected in this first scaffold.</p></div>
-<div class="stats"><article class="stat"><span>Product records</span><strong>—</strong><small>Data connection pending</small></article><article class="stat"><span>Sellable variants</span><strong>—</strong><small>Distinct from product identity</small></article><article class="stat"><span>Orders in workflow</span><strong>—</strong><small>No order feed connected</small></article><article class="stat"><span>Website publishing</span><strong>Paused</strong><small>Publishing is not enabled</small></article></div>
-<div class="cols"><section class="panel"><h2>Core modules</h2><div id="overviewList"></div></section><section class="panel"><h2>Target data flow</h2><div class="flow"><b>01 · Manage in Neclues</b><p>Create and maintain records with clear ownership and validation.</p></div><div class="flow"><b>02 · Validate shared data</b><p>Keep stable IDs, lifecycle, sellability, availability and publishability distinct.</p></div><div class="flow"><b>03 · Publish approved data</b><p>Only eligible records reach the website and ordering flow.</p></div><div class="flow"><b>04 · Learn from operations</b><p>Orders, kitchen outcomes, delivery and reviews feed back into the system.</p></div></section></div>
-</section>
-<section id="modules" class="hidden"><div class="head"><div><div class="eyebrow">Workspace</div><h1>System modules</h1><p>Navigation boundaries for the connected Purefolk system. Each module must follow the approved architecture and data contracts.</p></div></div><div class="tiles" id="tiles"></div></section>
-<section id="detail" class="hidden"><div class="head"><div><div class="eyebrow" id="detailGroup">Business module</div><h1 id="detailName">Module</h1><p id="detailDesc"></p></div><button class="back" data-page="modules">← All modules</button></div><div class="panel"><h2>Implementation boundary</h2><p id="detailBody">This module is represented in the interface only. Connect the approved fields, lifecycle rules, permissions and source-of-truth tables before enabling live operations.</p><div id="detailTags" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:16px"></div></div></section>
+<section id="dashboard">
+<div class="head"><div><div class="eyebrow">Phase 1 · Business control</div><h1>Dashboard</h1><p>Daily operations at a glance, alongside a wider view of Purefolk's business performance.</p></div><div class="toolbar"><label for="period" class="eyebrow">Reporting period</label><select id="period"><option value="today">Today</option><option value="week">Last 7 days</option><option value="month">This month</option></select></div></div>
+<div class="notice"><strong>UAT demo mode — all figures are illustrative.</strong><p>This dashboard uses sample figures only. It does not connect to Supabase, read real orders, process payments, or change production data. Login is intentionally on hold.</p></div>
+<div class="stats">
+<article class="stat"><span>Orders received</span><strong id="ordersMetric">12</strong><small id="ordersNote">4 need action · sample data</small></article>
+<article class="stat"><span>Sales recorded</span><strong id="salesMetric">₹2,460</strong><small>Sample gross order value</small></article>
+<article class="stat"><span>Payments pending</span><strong id="paymentsMetric">₹390</strong><small id="paymentsNote">2 sample orders</small></article>
+<article class="stat"><span>Estimated operating result</span><strong id="profitMetric">₹420</strong><small id="profitNote">Illustrative only, not accounting data</small></article>
 </div>
-<footer>PUREFOLK · NECLUES · Development foundation · No production writes</footer>
+<div class="cols">
+<section class="panel"><div class="panel-head"><div><h2>Daily operations</h2><p style="font-size:11px">Example order queue for operational review</p></div><span class="pill pending">Demo</span></div>
+<div class="tablewrap"><table><thead><tr><th>Order</th><th>Status</th><th>Payment</th><th>Amount</th></tr></thead><tbody id="orderRows"></tbody></table></div>
+</section>
+<section class="panel"><div class="panel-head"><div><h2>Needs attention</h2><p style="font-size:11px">Sample exceptions that an operator might need to resolve</p></div><span class="pill alert">Examples</span></div>
+<div class="task"><span class="task-icon">₹</span><div><b>Payment follow-up</b><small>2 example orders have pending payment status.</small></div><span class="pill pending">2</span></div>
+<div class="task"><span class="task-icon">⌁</span><div><b>Delivery confirmation</b><small>1 example order awaits delivery confirmation.</small></div><span class="pill pending">1</span></div>
+<div class="task"><span class="task-icon">◈</span><div><b>Product availability</b><small>1 sample product is marked unavailable.</small></div><span class="pill">Review</span></div>
+<div class="task"><span class="task-icon">▧</span><div><b>Website content</b><small>Banner and SEO publishing status will be connected in later steps.</small></div><span class="pill">Later</span></div>
+</section>
+</div>
+<div class="cols">
+<section class="panel"><div class="panel-head"><div><h2>Business performance</h2><p style="font-size:11px">Sample values change with the selected period</p></div></div>
+<div class="task"><span class="task-icon">↗</span><div><b>Gross sales</b><small>Order value before expenses and adjustments.</small></div><strong id="grossSales" style="margin-left:auto">₹2,460</strong></div>
+<div class="task"><span class="task-icon">▤</span><div><b>Food and packaging costs</b><small>Illustrative estimated direct costs.</small></div><strong id="directCosts" style="margin-left:auto">₹1,020</strong></div>
+<div class="task"><span class="task-icon">⌁</span><div><b>Delivery and operating costs</b><small>Illustrative allocated expenses.</small></div><strong id="operatingCosts" style="margin-left:auto">₹1,020</strong></div>
+<div class="task"><span class="task-icon">₹</span><div><b>Estimated result</b><small>Not a verified profit-and-loss statement.</small></div><strong id="resultLine" class="positive" style="margin-left:auto">₹420</strong></div>
+</section>
+<section class="panel"><div class="panel-head"><div><h2>Phase 1 module status</h2><p style="font-size:11px">Build and validate each module step by step</p></div></div>
+<div class="task"><span class="task-icon">◈</span><div><b>Product</b><small>Mock-data editor available for UAT review.</small></div><span class="pill">Demo</span></div>
+<div class="task"><span class="task-icon">♨</span><div><b>Recipe</b><small>Requirements and recipe relationships to be defined.</small></div><span class="pill pending">Planned</span></div>
+<div class="task"><span class="task-icon">⌕</span><div><b>SEO Panel & Banners</b><small>Requirements to be defined.</small></div><span class="pill pending">Planned</span></div>
+<div class="task"><span class="task-icon">▣</span><div><b>Orders, Payments & Delivery</b><small>Sample workflows only; no live integrations.</small></div><span class="pill pending">Planned</span></div>
+</section>
+</div>
+<h2 style="margin:0 0 12px">Open a Phase 1 module</h2>
+<div class="bottom-grid">
+<button class="tile" data-page="products"><span class="icon">◈</span><b>Product</b><p>Catalogue and availability</p></button>
+<button class="tile" data-page="recipes"><span class="icon">♨</span><b>Recipe</b><p>Ingredients and preparation</p></button>
+<button class="tile" data-page="seo"><span class="icon">⌕</span><b>SEO Panel</b><p>Search metadata and indexing</p></button>
+<button class="tile" data-page="banners"><span class="icon">▧</span><b>Banners</b><p>Visual content and links</p></button>
+<button class="tile" data-page="orders"><span class="icon">▣</span><b>Orders & Payments</b><p>Order and payment statuses</p></button>
+<button class="tile" data-page="pnl"><span class="icon">₹</span><b>Profit & Loss</b><p>Revenue and cost breakdown</p></button>
+<button class="tile" data-page="delivery"><span class="icon">⌁</span><b>Delivery</b><p>Areas, charges and fulfilment</p></button>
+</div>
+</section>
+<section id="modulePage" class="hidden"><div class="head"><div><div class="eyebrow">Purefolk · Phase 1</div><h1 id="moduleTitle">Module</h1><p id="moduleDescription"></p></div><button class="btn" data-page="dashboard">← Dashboard</button></div><div class="notice"><strong>UAT placeholder</strong><p>This module has not been implemented yet. We will define its fields, workflows, validation rules and acceptance tests before building it. No production connection is active.</p></div><div class="panel"><h2>Next step</h2><p id="moduleNext"></p></div></section>
+</div>
+<footer>PUREFOLK · NECLUES · UAT foundation · Sample figures only · No production writes</footer>
 </main>
 </div>
 <script>
-const modules=[
-{id:"products",name:"Product catalog",group:"Business data",icon:"◈",desc:"Permanent product identity, classification, descriptions and lifecycle.",tags:["Product ID","Classification","Lifecycle","Publishability"]},
-{id:"variants",name:"Sellable variants",group:"Business data",icon:"▤",desc:"Sellable configurations, options and SKU-level distinctions.",tags:["Variant ID","SKU","Options","Sellability"]},
-{id:"recipes",name:"Recipes & ingredients",group:"Business data",icon:"♨",desc:"Recipe composition, ingredients, preparation rules and yield.",tags:["Recipe versions","Ingredients","Allergens","Yield"]},
-{id:"suppliers",name:"Suppliers & sourcing",group:"Business data",icon:"⇄",desc:"Supplier records, ingredient sourcing and approval status.",tags:["Supplier","Source","Approval","Traceability"]},
-{id:"pricing",name:"Costs & pricing",group:"Business data",icon:"₹",desc:"Ingredient and recipe costs, packaging, selling prices and margins.",tags:["Cost inputs","Price","Margin","History"]},
-{id:"orders",name:"Orders",group:"Operations",icon:"▣",desc:"Order intake, validation, status transitions and selected sellable items.",tags:["Order ID","Line items","Status","Payment"]},
-{id:"kitchen",name:"Kitchen operations",group:"Operations",icon:"♧",desc:"Preparation queue, recipe execution, quality checks and hand-off.",tags:["Prep queue","Quality","Completion","Exceptions"]},
-{id:"delivery",name:"Delivery",group:"Operations",icon:"⌁",desc:"Delivery-area eligibility, rules, dispatch and fulfilment outcomes.",tags:["Area","Rules","Dispatch","Proof"]},
-{id:"feedback",name:"Customer feedback",group:"Operations",icon:"♡",desc:"Customer reviews and issue signals linked to relevant experiences.",tags:["Review","Sentiment","Order link","Follow-up"]},
-{id:"analytics",name:"Analytics",group:"Operations",icon:"▥",desc:"Operational and customer metrics derived from source records.",tags:["Metrics","Trends","Exceptions","Data quality"]},
-{id:"settings",name:"System settings",group:"Governance",icon:"⚙",desc:"Access policy, integrations, audit trail and publication safeguards.",tags:["Permissions","Integrations","Audit","Publishing"]}
+const $=id=>document.getElementById(id);
+const sampleOrders=[
+ {id:"DEMO-1001",status:"Preparing",payment:"Paid",amount:399},
+ {id:"DEMO-1002",status:"New",payment:"Pending",amount:249},
+ {id:"DEMO-1003",status:"Ready",payment:"Paid",amount:590},
+ {id:"DEMO-1004",status:"Out for delivery",payment:"Paid",amount:320},
+ {id:"DEMO-1005",status:"New",payment:"Pending",amount:141},
+ {id:"DEMO-1006",status:"Awaiting confirmation",payment:"Paid",amount:761}
 ];
-const el=id=>document.getElementById(id);
-function row(m){return '<div class="module"><div class="ico">'+m.icon+'</div><div><b>'+m.name+'</b><small>'+m.desc+'</small></div><span class="tag">Shell</span></div>'}
-function tile(m){return '<button class="tile" data-module="'+m.id+'"><span class="ico">'+m.icon+'</span><b>'+m.name+'</b><p>'+m.desc+'</p></button>'}
-el("overviewList").innerHTML=modules.slice(0,5).map(row).join("");
-el("tiles").innerHTML=modules.map(tile).join("");
-function page(id){document.querySelectorAll(".content>section").forEach(s=>s.classList.add("hidden"));document.querySelectorAll("nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===id));const m=modules.find(x=>x.id===id);if(id==="overview"||id==="modules"){el(id).classList.remove("hidden");el("crumb").textContent=id==="overview"?"Overview":"System modules";}else if(m){el("detail").classList.remove("hidden");el("crumb").textContent=m.name;el("detailName").textContent=m.name;el("detailGroup").textContent=m.group;el("detailDesc").textContent=m.desc;el("detailTags").innerHTML=m.tags.map(t=>'<span class="tag">'+t+'</span>').join("");}}
-document.addEventListener("click",e=>{const b=e.target.closest("[data-page]");if(b){if(b.dataset.page==="products"){window.location.href="products.html";return;}page(b.dataset.page);return;}const t=e.target.closest("[data-module]");if(t){if(t.dataset.module==="products"){window.location.href="products.html";return;}page(t.dataset.module);}});
+const metrics={
+ today:{orders:12,sales:2460,pending:390,pendingCount:2,direct:1020,operating:1020,result:420},
+ week:{orders:58,sales:14820,pending:870,pendingCount:5,direct:6240,operating:5110,result:3470},
+ month:{orders:214,sales:54600,pending:1920,pendingCount:11,direct:22900,operating:19200,result:12500}
+};
+const fmt=n=>"₹"+Number(n).toLocaleString("en-IN");
+function renderMetrics(){const m=metrics[$("period").value];$("ordersMetric").textContent=m.orders;$("ordersNote").textContent=Math.max(1,Math.round(m.orders*.33))+" need action · sample data";$("salesMetric").textContent=fmt(m.sales);$("paymentsMetric").textContent=fmt(m.pending);$("paymentsNote").textContent=m.pendingCount+" sample orders";$("profitMetric").textContent=fmt(m.result);$("profitNote").textContent="Illustrative only, not accounting data";$("grossSales").textContent=fmt(m.sales);$("directCosts").textContent=fmt(m.direct);$("operatingCosts").textContent=fmt(m.operating);$("resultLine").textContent=fmt(m.result);$("resultLine").className=m.result<0?"caution":"positive";
+ const rows=$("orderRows");rows.replaceChildren();sampleOrders.slice(0,$("period").value==="today"?4:6).forEach(o=>{const tr=document.createElement("tr");const statusClass=o.payment==="Pending"?"pending":"";tr.innerHTML="<td><strong>"+o.id+"</strong><small>Sample order</small></td><td>"+o.status+"</td><td><span class=\"pill "+statusClass+"\">"+o.payment+"</span></td><td>"+fmt(o.amount)+"</td>";rows.appendChild(tr)})}
+const modules={
+ products:{title:"Product",desc:"Manage product catalogue fields and availability using isolated mock data.",next:"Review the existing demo product editor. Its records are session-only and do not write to Supabase.",href:"products.html"},
+ recipes:{title:"Recipe",desc:"Recipe records, ingredients, quantities, preparation steps and product mapping.",next:"Define the recipe data model and how recipe versions connect to products before implementation."},
+ seo:{title:"SEO Panel",desc:"Manage metadata, canonical URLs, indexing controls and structured data.",next:"Inventory current Purefolk pages and define which metadata fields can be safely previewed before publishing."},
+ banners:{title:"Banners",desc:"Manage banner assets, destination links, order, visibility and scheduling.",next:"Define image requirements, placement, start/end rules and preview behaviour. Publishing stays disabled."},
+ orders:{title:"Orders & Payments",desc:"Review order lifecycle, payment status, adjustments and reconciliation.",next:"Map the current order intake and payment sources. Use fictional order IDs and amounts until safe integrations are approved."},
+ pnl:{title:"Profit & Loss",desc:"Summarize sales, direct food costs, packaging, delivery expenses and operating result.",next:"Define each cost source, accounting period, refunds and fee treatment. Demo totals must not be treated as actual financial results."},
+ delivery:{title:"Delivery",desc:"Configure service areas, delivery charges, eligibility and fulfilment status.",next:"Define delivery-area rules, order hand-off statuses and delivery-charge calculations using test cases."}
+};
+function go(page){document.querySelectorAll("nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));if(page==="dashboard"){$("dashboard").classList.remove("hidden");$("modulePage").classList.add("hidden");$("crumb").textContent="Dashboard";return}const m=modules[page];if(!m)return;if(m.href){window.location.href=m.href;return}$("dashboard").classList.add("hidden");$("modulePage").classList.remove("hidden");$("crumb").textContent=m.title;$("moduleTitle").textContent=m.title;$("moduleDescription").textContent=m.desc;$("moduleNext").textContent=m.next}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-page]");if(b)go(b.dataset.page)});$("period").addEventListener("change",renderMetrics);renderMetrics();
 </script>
 </body>
 </html>
