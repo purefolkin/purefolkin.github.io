@@ -105,7 +105,7 @@ for(const k of ['collections','searchTerms','recipeVersion','extraIds','ingredie
 for(const k of ['foodCost','packagingCost'])q[k]=Number(q[k])||0;
 return q;
 }
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(x)&&x.length)return x.map(normalize)}catch(e){}return fresh()}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(x)&&x.length){const byId=new Map(x.map(p=>[p.productId,normalize(p)]));seed.forEach(p=>{if(!byId.has(p.productId))byId.set(p.productId,normalize(p))});return [...byId.values()]} }catch(e){}return fresh()}
 let products=load(),editing=null;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
