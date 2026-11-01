@@ -1,0 +1,14 @@
+{
+  "name": "purefolk-platform",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:nucleus": "npm run dev --workspace=@purefolk/nucleus",
+    "build:nucleus": "npm run build --workspace=@purefolk/nucleus",
+    "typecheck:nucleus": "npm run typecheck --workspace=@purefolk/nucleus"
+  }
+}
