@@ -6,11 +6,13 @@ on:
     paths:
       - "apps/website/**"
       - "apps/nucleus/**"
+      - "packages/catalogue-domain/**"
       - ".github/workflows/purefolk-platform.yml"
 jobs:
   verify:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         app: [website, nucleus]
     defaults:
@@ -22,6 +24,7 @@ jobs:
         with:
           node-version: 22
       - run: npm install
+      - run: npm ls @purefolk/catalogue-domain
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run build
