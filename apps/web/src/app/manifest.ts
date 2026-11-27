@@ -1,0 +1,1 @@
+export default function manifest(){return {name:"Purefolk",short_name:"Purefolk",start_url:"/",display:"standalone"};}
