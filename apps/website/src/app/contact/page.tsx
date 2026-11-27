@@ -1,0 +1,3 @@
+import type { Metadata } from "next";
+export const metadata:Metadata={title:"Contact Purefolk",description:"Contact Purefolk for product and service enquiries.",alternates:{canonical:"/contact"}};
+export default function Contact(){return <section className="page"><div className="wrap"><p className="eyebrow">Contact</p><h1>We are here to help.</h1><p className="lead">Customer support channels will be published here once the official contact details and response process are confirmed.</p><div className="notice">Official contact details are being configured. We will not publish an unverified phone number or email address.</div></div></section>}
