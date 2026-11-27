@@ -1,0 +1,3 @@
+import type { Metadata } from "next";
+export const metadata:Metadata={title:"About Purefolk",description:"Learn about Purefolk and the principles behind the brand.",alternates:{canonical:"/about"}};
+export default function About(){return <section className="page"><div className="wrap"><p className="eyebrow">About Purefolk</p><h1>Built around care, clarity and better food choices.</h1><p className="lead">Purefolk is being built to make thoughtful vegetarian food easier to understand and access. Our story will grow through the food we make, the standards we follow and the customers we serve.</p></div></section>}
