@@ -17,6 +17,9 @@ This document records business intent. Customer-facing terms must be reviewed ag
 - A customer may maintain multiple saved addresses (for example Home, Office and Other).
 - Keep the customer's saved address separate from the order's address snapshot.
 - On order submission, preserve the exact address used for that order. Later changes to a saved address must not alter historical orders.
+- Working checkout fields: full name, mobile number, house/flat/building, street/road, area/locality and PIN code; landmark and delivery instructions are optional. Confirm exact required/optional validation before implementation.
+- Customers may select a saved address or add a new one. Address labels may include Home, Office and Other.
+- Validate serviceability by configured PIN/locality/service area before payment/order submission. If not serviceable, block normal checkout; do not accept payment and promise delivery.
 - Nucleus must retain the order reference and the minimum customer/contact details needed to fulfil and support that order, subject to access and retention controls.
 
 ## 3. Payment verification
@@ -54,7 +57,7 @@ Before releasing a prepaid order to the Kitchen queue, Nucleus validates:
 - Delivery address is serviceable.
 - Kitchen is open and able to accept work.
 
-If all configured conditions pass, Nucleus automatically routes the order to Kitchen. Admin handles exceptions where validation fails or a human decision is required; Admin should not manually approve every normal order.
+The final release gate is unresolved: earlier working notes specify automatic routing after all configured checks pass, while a later spoken recap mentioned an explicit Admin acceptance step. Admin handles failed checks and exceptions in either model. Do not implement either release-gate interpretation until the founder confirms it; see the Master Decision Register (ORD-03).
 
 Stock controls should prevent ordering quantities that are no longer available. If a system or operational failure nevertheless creates a paid order for an unavailable item, record the affected line and contact the customer with an approved resolution, such as a customer-approved alternative, partial fulfilment or refund.
 
@@ -117,6 +120,8 @@ Failed, delayed and partial refunds must remain visible for reconciliation and m
 - Final bank/payment-provider collection method and permitted account type.
 - Exact payment and refund state vocabulary and permissions.
 - Whether payment reminders are sent through an approved WhatsApp Business Platform/API provider.
+- Exact start event for the two-hour pending-payment window, grace/override rule and late-payment handling.
+- Final reminder timing and customer-facing wording.
 - Retention periods and privacy notice wording.
 - Applicable tax invoice/receipt requirements.
 - Partial fulfilment and substitution approval flow.
@@ -124,3 +129,38 @@ Failed, delayed and partial refunds must remain visible for reconciliation and m
 ## 11. Implementation boundary
 
 This document does not authorise production database migrations, live payment processing, live order writes or a public launch. Implement only after policy review, shared data-model approval, server-side validation, role/permission design, audit logging and development-environment testing.
+
+
+---
+
+## 12. Pending-payment window and reminders — 27 November 2026
+
+### Payment window
+
+- The working business choice is a maximum **two-hour Pending payment window**.
+- The exact event that starts the two-hour clock is not yet specified. It must be defined consistently before implementation.
+- At expiry, an unpaid order must not be released to Kitchen. The system should record expiry and stop future reminders.
+- A payment arriving after expiry must be reconciled against the bank/provider record before any fulfilment decision. Do not automatically reopen or release it. Admin must follow the approved late-payment rule once defined.
+- An authorised exception/extension, if allowed, must record actor, reason, new expiry and timestamp.
+
+### Reminder schedule
+
+- Reminder around **15–20 minutes** and another at **60 minutes** are proposals, not confirmed final timings.
+- Send only while payment remains pending and only through a permitted, consented channel.
+- Cancel scheduled reminders once payment is verified, the order is cancelled/expired, or the customer has opted out of that channel.
+- Record attempt, provider message/reference, sent/delivered/failed status where available. Do not equate an attempted send with delivery.
+- Automated WhatsApp reminders require an eligible WhatsApp Business Platform/API setup, approved templates and current policy compliance. A normal WhatsApp app is not the automation mechanism.
+
+### WhatsApp order handoff
+
+- Website may open WhatsApp with a prefilled order summary and Order ID.
+- The customer must manually press Send. Opening WhatsApp or the prefilled chat is not evidence that the message reached Purefolk.
+- Nucleus remains authoritative even if the customer never sends the optional message. The order/payment workflow must not depend on an unobservable WhatsApp-send event.
+
+## 13. Checkout consent evidence
+
+At checkout, keep separate choices for:
+1. Necessary order/fulfilment communication and the specific transactional updates/reminders the customer is agreeing to receive.
+2. Optional marketing/promotional communication.
+
+Do not preselect optional marketing consent or infer it from a phone number, order submission or transactional consent. Store the purpose, exact wording/version, timestamp and withdrawal/opt-out record. Final copy and legal basis require privacy/legal review.
