@@ -119,3 +119,20 @@ Design the data model so these systems can be added later without building their
 ## 8. Decision status
 
 This file is a working v1 implementation baseline. It records the current consolidation decisions and deferred scope; it does not authorize production database migrations, deletion of legacy data, live ordering, or replacement of the production website.
+
+
+---
+
+## 9. Kitchen workspace clarification — 27 November 2026
+
+The earlier “SPIRIT kitchen dashboard” out-of-scope item means a separate SPIRIT application is deferred; it does **not** mean kitchen operations are excluded from Nucleus.
+
+For the current phase:
+- Add a **Kitchen** workspace/module within Nucleus.
+- Kitchen staff access it using individual authenticated staff accounts and role-based permissions.
+- Admin monitors kitchen work from Nucleus.
+- Kitchen uses the same authoritative order record as Orders; it must not create a second order database or duplicate order identity.
+- A future standalone SPIRIT application remains deferred until operational scale justifies it.
+- Staff assignment/self-claim behaviour, station-based routing and detailed screen permissions remain pending decisions.
+
+See `docs/nucleus/kitchen-module-working-spec-v1.md` for the separate working specification.
