@@ -181,3 +181,54 @@ Internal queue, staff identity, assignment and audit details must not be exposed
 - The exact assignment model (staff self-claim from a shared queue versus Admin assignment) is still open and must not be assumed.
 
 The detailed module boundary and working screen specification are maintained separately in `docs/nucleus/kitchen-module-working-spec-v1.md`.
+
+
+---
+
+## 10. Confirmed payment, address and refund working rules — 27 November 2026
+
+This section records the current operating decisions discussed with the founder. It is a working policy draft and must be checked against applicable consumer, tax, privacy and payment-provider requirements before launch.
+
+### Payment verification before Kitchen release
+
+- For the current manual UPI flow, the customer places the order and receives payment instructions separately.
+- A payment is treated as verified only after the actual credit is checked in the receiving bank account or a trusted payment-provider confirmation is received.
+- A customer-provided screenshot or message alone is not proof of payment.
+- Nucleus records amount, method, transaction reference/UTR where available, payment time, verifier and verification time.
+- An order requiring prepayment must not enter the normal Kitchen queue until payment is verified.
+- Order state and payment state remain separate.
+
+### Receipts
+
+- Generate an Order Receipt when the order is created; it shows purchased items and amounts and may show Payment Pending.
+- Generate a separate Payment Receipt after payment is verified; it records amount, method, transaction reference where available and verification details.
+- Both receipts use the same Order ID.
+- Do not label a receipt a GST tax invoice unless the applicable invoicing requirements are met.
+
+### Address and consent records
+
+- Collect the delivery address at website checkout, before order submission; do not rely on WhatsApp as the source of the address.
+- Preserve an immutable order-time address snapshot. Later edits to a customer's saved address must not rewrite the address attached to an existing order.
+- Transactional WhatsApp updates/payment reminders and marketing communication require separate consent choices. Do not treat transactional consent as marketing consent.
+- Store only the consent evidence and customer data needed for the stated purpose, with access and retention controls.
+
+### Stock and order acceptance
+
+- Nucleus must validate sellable product/variant/add-on availability and reserve the required stock before releasing an order to Kitchen.
+- When all configured conditions pass, Nucleus automatically routes the order to Kitchen; Admin handles failed checks and exceptions rather than manually accepting every ordinary order.
+- Stock exhaustion should prevent new orders for the unavailable quantity. If a system failure nevertheless allows an unavailable item to be ordered, record the affected line and resolve with the customer through an approved replacement/partial-fulfilment or refund path.
+
+### Refund eligibility and controls
+
+- Initiate a refund only against a payment that has been verified as received.
+- The current proposed valid reasons are Purefolk fulfilment error, wrong item, missing item, damaged item/food, duplicate or excess payment, and an item becoming unavailable due to a system/operational failure after payment.
+- A customer simply changing their mind is not, under the current proposed business policy, an automatic refund reason. This policy must not override any mandatory rights or remedies under applicable law.
+- Where only one line is affected and the rest of the order can be fulfilled, consider a line-level/partial refund or a customer-approved alternative rather than treating the whole order as refunded.
+- Record the reason, affected order/line, amount, decision-maker, timestamps, customer communication and payment-provider/bank reference.
+- Keep refund workflow states distinct: **Refund Requested → Under Review → Initiated → Completed**.
+- Mark a refund **Completed** only after the return of funds is confirmed by the bank/payment provider. “Initiated” is not “Completed”.
+- Reconcile failed, delayed or partial refunds; preserve the audit trail.
+
+### Policy boundary
+
+This is an operational working policy, not legal advice. Before live launch, review customer-facing cancellation/refund wording, privacy notice, consent language, tax receipt/invoice treatment and payment collection method for legal and provider compliance.
