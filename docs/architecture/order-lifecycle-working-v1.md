@@ -145,8 +145,8 @@ This section records decisions made after the original working draft. Where this
 
 - Nucleus validates the order before releasing it to the Kitchen queue.
 - The agreed release conditions include verified payment, sellable products and selected add-ons being available, required stock being reservable, a serviceable delivery address, and the kitchen being open/able to accept work.
-- When all required conditions pass, Nucleus automatically routes the order to the Kitchen queue.
-- Orders that fail validation or require a human decision remain in the Nucleus Admin exception workflow; Admin should not manually approve every normal order.
+- The required validation conditions are checked before Kitchen release. **The final release gate is unresolved:** earlier working notes specify automatic routing when all checks pass, while a later spoken recap referred to an explicit Admin acceptance step. See section 11 and the Master Decision Register. Do not implement either interpretation until the founder confirms it.
+- Orders that fail validation or require a human decision remain in the Nucleus Admin exception workflow.
 - Payment verification and order/kitchen state remain separate records.
 
 ### Preparation start
@@ -215,7 +215,7 @@ This section records the current operating decisions discussed with the founder.
 ### Stock and order acceptance
 
 - Nucleus must validate sellable product/variant/add-on availability and reserve the required stock before releasing an order to Kitchen.
-- When all configured conditions pass, Nucleus automatically routes the order to Kitchen; Admin handles failed checks and exceptions rather than manually accepting every ordinary order.
+- The release-gate choice remains unresolved: automatic routing after validation versus an explicit Admin acceptance step. Do not treat either as final until the founder confirms the conflict recorded in section 11.
 - Stock exhaustion should prevent new orders for the unavailable quantity. If a system failure nevertheless allows an unavailable item to be ordered, record the affected line and resolve with the customer through an approved replacement/partial-fulfilment or refund path.
 
 ### Refund eligibility and controls
@@ -232,3 +232,35 @@ This section records the current operating decisions discussed with the founder.
 ### Policy boundary
 
 This is an operational working policy, not legal advice. Before live launch, review customer-facing cancellation/refund wording, privacy notice, consent language, tax receipt/invoice treatment and payment collection method for legal and provider compliance.
+
+
+---
+
+## 11. Decision reconciliation and exception handling — 27 November 2026
+
+### Admin acceptance vs automatic Kitchen routing — CONFLICT / PENDING
+
+The current notes contain two incompatible descriptions:
+- Earlier working direction: Nucleus checks payment, availability, stock reservation, serviceability and Kitchen availability; if all pass, it automatically routes the order. Admin handles exceptions only.
+- A later spoken recap described an Admin acceptance step after payment and before Kitchen queue entry.
+
+The spoken recap was an assistant summary, not an explicit founder decision. Therefore this document does not silently replace the earlier direction or treat the Admin gate as confirmed. Keep the release gate configurable/unimplemented until the founder explicitly chooses. The Master Decision Register records this as ORD-03.
+
+### Detailed exception register
+
+The full working exception matrix is maintained in [Order and fulfilment exception handling](../operations/order-exception-handling-working-v1.md). It covers:
+- Checkout/address/serviceability and cart validation.
+- Duplicate order submissions and price/availability changes.
+- Pending, late, short, excess, duplicate and unverified payments.
+- WhatsApp message-send uncertainty, reminder failures and opt-outs.
+- Acceptance/routing, stock and ingredient shortages.
+- Kitchen queue ageing, staff claim conflicts, staff unavailability and preparation failures.
+- QC, allergen/dietary safety, missing items and packaging failures.
+- Delivery assignment, failed handover, customer unreachable, delay and proof/OTP failure.
+- Cancellation, partial fulfilment, complaints, refunds, privacy/access and system outages.
+
+Each exception must preserve an owner, timestamps, reason, evidence/reference, customer communication, decision, resolution and audit history. Exact owners, SLAs and customer-facing remedies remain pending where not approved.
+
+### Canonical decision index
+
+See [Master Decision Register](master-decision-register-v1.md) for status definitions and the consolidated list of confirmed working decisions, proposals, conflicts, pending choices and deferred scope.
