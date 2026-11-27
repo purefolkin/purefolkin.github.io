@@ -1,3 +1,8 @@
-import { requireAdmin } from "@/lib/auth";
-export const metadata={title:"Nucleus Admin",robots:{index:false,follow:false}};
-export default async function AdminLayout({children}:{children:React.ReactNode}){await requireAdmin();return children;}
+export const metadata = {
+  title: { default: "Nucleus Admin", template: "%s | Nucleus" },
+  robots: { index: false, follow: false },
+};
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
