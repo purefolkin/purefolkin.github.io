@@ -133,3 +133,51 @@ Do not enable live checkout or order writes until:
 4. State transitions and actor permissions are approved.
 5. Exception and customer communication paths are tested.
 6. Server-side validation, idempotency, RLS and audit logging are tested in development.
+
+
+---
+
+## 9. Kitchen workflow decisions — 27 November 2026
+
+This section records decisions made after the original working draft. Where this section conflicts with an earlier open item, this dated section is the current working direction.
+
+### Order release to Kitchen
+
+- Nucleus validates the order before releasing it to the Kitchen queue.
+- The agreed release conditions include verified payment, sellable products and selected add-ons being available, required stock being reservable, a serviceable delivery address, and the kitchen being open/able to accept work.
+- When all required conditions pass, Nucleus automatically routes the order to the Kitchen queue.
+- Orders that fail validation or require a human decision remain in the Nucleus Admin exception workflow; Admin should not manually approve every normal order.
+- Payment verification and order/kitchen state remain separate records.
+
+### Preparation start
+
+- Arrival in the Kitchen queue does not mean preparation has started.
+- A kitchen staff member must explicitly use **Start Preparation** when work actually begins.
+- Record the actor (staff identity), order or work item, and timestamp. This provides a reliable preparation-start time distinct from order submission and queue-entry time.
+
+### Preparation completion, QC and packing
+
+- Staff explicitly marks preparation complete.
+- Preparation completion does not mean the order is ready for dispatch.
+- The order proceeds through a separate **Quality Check & Packing** stage.
+- Only after required QC and packing are completed can the order move to **Ready for Dispatch / Handover**.
+- The exact QC checklist, packing checklist, responsible role and customer-facing wording remain to be designed.
+
+### Customer status projection
+
+The working customer-safe progression is:
+- Preparing
+- Quality Check & Packing
+- Ready for Dispatch
+
+Internal queue, staff identity, assignment and audit details must not be exposed to customers.
+
+### Staff and monitoring
+
+- Kitchen operations are initially a workspace/module inside Nucleus, not a separate SPIRIT application.
+- Each staff member needs an individual authenticated account/identity and role-based permissions. A Staff ID is an identifier, not by itself an authentication method.
+- Nucleus records which staff member starts/completes work and when.
+- Admin can monitor queue, active work, staff ownership, stage and exceptions.
+- The exact assignment model (staff self-claim from a shared queue versus Admin assignment) is still open and must not be assumed.
+
+The detailed module boundary and working screen specification are maintained separately in `docs/nucleus/kitchen-module-working-spec-v1.md`.
