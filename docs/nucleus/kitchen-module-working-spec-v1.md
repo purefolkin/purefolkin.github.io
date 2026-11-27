@@ -145,3 +145,12 @@ This document describes the workflow and module behaviour only. It does not auth
 - Building a separate SPIRIT application.
 
 Before implementation, approve the pending decisions, map the shared order/work-item data model, define role permissions, and test state transitions and audit logging in a development environment.
+
+
+---
+
+## 13. Release-gate conflict and consolidated references — 27 November 2026
+
+The order-release gate is not to be inferred from this Kitchen specification alone. Earlier working notes say Nucleus automatically routes orders after validation; a later spoken recap referred to Admin acceptance. This conflict is recorded as **ORD-03** in [Master Decision Register](../architecture/master-decision-register-v1.md). Keep the release gate unresolved until the founder explicitly confirms the intended rule.
+
+For failure paths and case ownership, use the [Order and fulfilment exception handling register](../operations/order-exception-handling-working-v1.md). The exact assignment model, QC/packing roles and checklists remain pending as stated above.
