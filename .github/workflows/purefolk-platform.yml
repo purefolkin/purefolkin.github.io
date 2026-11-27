@@ -1,0 +1,31 @@
+name: Purefolk application checks
+on:
+  push:
+    branches: [rebuild/purefolk-website-nucleus-v1]
+  pull_request:
+    paths:
+      - "apps/website/**"
+      - "apps/nucleus/**"
+      - ".github/workflows/purefolk-platform.yml"
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [website, nucleus]
+    defaults:
+      run:
+        working-directory: apps/${{ matrix.app }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/${{ matrix.app }}/package.json
+      - run: npm install
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://purefolk.in
