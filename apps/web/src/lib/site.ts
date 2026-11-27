@@ -1,0 +1,8 @@
+export const site = {
+  name: "Purefolk",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://purefolk.in",
+  description: "Thoughtful vegetarian food, made with care. Explore Purefolk's menu and food philosophy.",
+  locale: "en_IN",
+  currency: "INR",
+  timezone: "Asia/Kolkata",
+} as const;
