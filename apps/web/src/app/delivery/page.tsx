@@ -1,4 +1,33 @@
 import type { Metadata } from "next";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-export const metadata:Metadata={title:"Delivery Information",description:"Check Purefolk's configured delivery areas and service information.",alternates:{canonical:"/delivery"}};
-export default async function DeliveryPage(){let areas:{id:string;name:string;distance_km:number|null}[]=[];let announcement:string|null=null;const db=await createSupabaseServerClient();if(db){const [a,s]=await Promise.all([db.from("pf_delivery_areas").select("id,name,distance_km").eq("is_active",true).order("sort_order"),db.from("pf_settings").select("announcement").limit(1).maybeSingle()]);areas=(a.data??[]) as typeof areas;announcement=s.data?.announcement??null}return <section className="page"><div className="container"><p className="eyebrow">Delivery information</p><h1 className="page-title">Service details, clearly stated.</h1><p className="intro">Coverage and charges are controlled by Purefolk operations. Only configured delivery areas are shown.</p>{announcement?<div className="empty">{announcement}</div>:null}{areas.length?<div className="cards">{areas.map(a=><article className="card" key={a.id}><h3>{a.name}</h3>{a.distance_km!==null?<p>{a.distance_km} km service reference</p>:null}</article>)}</div>:<div className="empty"><strong>Delivery areas are being configured.</strong><p>Coverage and charges will be published after the operating area is verified.</p></div>}</div></section>}
+
+export const metadata: Metadata = {
+  title: "Delivery Information",
+  description: "Check Purefolk's configured delivery areas and service information.",
+  alternates: { canonical: "/delivery" },
+};
+
+type Rule = { delivery_fee_paise: number; free_delivery_threshold_paise: number | null; minimum_order_value_paise: number };
+type Area = { id: string; name: string; locality_names: string[]; pincodes: string[]; pf_delivery_rules_v2: Rule[] };
+
+export default async function DeliveryPage() {
+  let areas: Area[] = [];
+  const db = await createSupabaseServerClient();
+  if (db) {
+    const { data } = await db.from("pf_delivery_areas_v2")
+      .select("id,name,locality_names,pincodes,pf_delivery_rules_v2(delivery_fee_paise,free_delivery_threshold_paise,minimum_order_value_paise)")
+      .eq("status", "active").eq("is_serviceable", true).order("name");
+    areas = (data ?? []) as unknown as Area[];
+  }
+  const money = (paise: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(paise / 100);
+  return <section className="page"><div className="container">
+    <p className="eyebrow">Delivery information</p><h1 className="page-title">Service details, clearly stated.</h1>
+    <p className="intro">Coverage and charges are controlled by Purefolk operations. Only verified, active delivery areas are shown here.</p>
+    {areas.length ? <div className="cards">{areas.map(area => <article className="card" key={area.id}>
+      <h3>{area.name}</h3>
+      {area.locality_names.length ? <p>{area.locality_names.join(", ")}</p> : null}
+      {area.pincodes.length ? <p className="muted">PIN codes: {area.pincodes.join(", ")}</p> : null}
+      {area.pf_delivery_rules_v2.map((rule,i) => <p key={i}>Delivery: {money(rule.delivery_fee_paise)}{rule.free_delivery_threshold_paise !== null ? ` · Free above ${money(rule.free_delivery_threshold_paise)}` : ""}{rule.minimum_order_value_paise ? ` · Minimum ${money(rule.minimum_order_value_paise)}` : ""}</p>)}
+    </article>)}</div> : <div className="empty"><strong>Delivery areas are being configured.</strong><p>We will publish coverage and charges after the operating area is verified.</p></div>}
+  </div></section>;
+}
