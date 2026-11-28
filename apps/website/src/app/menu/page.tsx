@@ -1,0 +1,3 @@
+import type { Metadata } from "next";
+export const metadata:Metadata={title:"Menu",description:"Explore the Purefolk vegetarian menu and product information.",alternates:{canonical:"/menu"}};
+export default function Menu(){return <section className="page"><div className="wrap"><p className="eyebrow">The menu</p><h1>Explore the menu.</h1><p className="lead">Products, portions, ingredients and availability will be published here after they are approved in Nucleus.</p><div className="notice"><strong>The catalogue is being prepared.</strong><p>We will not display sample products, unverified prices or assumed nutrition information as live offers.</p></div></div></section>}

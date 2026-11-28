@@ -1,0 +1,11 @@
+import {notFound} from "next/navigation";
+const sections:Record<string,{title:string,description:string,items:string[]}>= {
+ orders:{title:"Orders",description:"Manage the single order lifecycle, payment state, fulfilment and exceptions.",items:["Order queue","Order details and immutable item snapshots","Cancellations, refunds and issue resolution"]},
+ catalogue:{title:"Catalogue",description:"Manage what Purefolk offers and what customers are allowed to see.",items:["Categories and subcategories","Products, variants and add-ons","Lifecycle, website visibility and availability controls"]},
+ "product-development":{title:"Product development",description:"Connect recipes, ingredients and preparation information to each product.",items:["Recipes and recipe versions","Ingredients and supplier references","Product-linked costing and preparation records"]},
+ delivery:{title:"Delivery & service",description:"Configure where and when Purefolk can serve customers.",items:["Service areas and PIN/locality coverage","Delivery fees and minimum order values","Service windows, cut-offs and capacity"]},
+ customers:{title:"Customers & feedback",description:"Understand customer history and resolve feedback responsibly.",items:["Customer profiles and order history","Product and order feedback","Complaints and resolution history"]},
+ website:{title:"Website & content",description:"Manage approved customer-facing content and publication.",items:["Homepage and content sections","Page content and SEO metadata","Publication review and preview"]},
+ settings:{title:"Settings",description:"Control access, business rules and platform behaviour.",items:["Team access and roles","Ordering controls and business rules","Audit history and system configuration"]}
+};
+export default async function SectionPage({params}:{params:Promise<{section:string}>}){const {section}=await params;const item=sections[section];if(!item)notFound();return <><p className="eyebrow">Nucleus module</p><h1>{item.title}</h1><p className="intro">{item.description}</p><div className="grid">{item.items.map((label)=><article className="card" key={label}><h2>{label}</h2><p>This area is mapped for implementation. Data editing will be enabled only after its workflow, schema and permissions are reviewed.</p></article>)}</div></>}

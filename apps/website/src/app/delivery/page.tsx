@@ -1,0 +1,3 @@
+import type { Metadata } from "next";
+export const metadata:Metadata={title:"Delivery",description:"Find Purefolk delivery information and service coverage.",alternates:{canonical:"/delivery"}};
+export default function Delivery(){return <section className="page"><div className="wrap"><p className="eyebrow">Delivery & service</p><h1>Know before you order.</h1><p className="lead">Service areas, delivery windows, minimum order values and charges will be published only after they are configured and verified.</p><div className="notice"><strong>Delivery details are being configured.</strong><p>We will show confirmed coverage and service rules here. No delivery promise is being made yet.</p></div></div></section>}

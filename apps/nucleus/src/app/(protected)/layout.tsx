@@ -1,0 +1,5 @@
+import Link from "next/link";
+import {requireAdmin} from "@/lib/auth";
+import {signOut} from "../login/actions";
+const nav=[["Overview","/overview"],["Orders","/orders"],["Catalogue","/catalogue"],["Product development","/product-development"],["Delivery & service","/delivery"],["Customers & feedback","/customers"],["Website & content","/website"],["Settings","/settings"]];
+export default async function ProtectedLayout({children}:{children:React.ReactNode}){await requireAdmin();return <div className="shell"><aside className="sidebar"><Link href="/overview" className="logo">PUREFOLK<small>NUCLEUS CONTROL</small></Link><nav className="nav" aria-label="Nucleus navigation">{nav.map(([label,href])=><Link href={href} key={href}>{label}</Link>)}</nav><p className="side-note">One source of truth for Purefolk operations.</p></aside><div className="main"><header className="topbar"><strong>Nucleus</strong><form action={signOut}><button className="logout" type="submit">Sign out</button></form></header><main className="content">{children}</main></div></div>}
